@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Sensation Feed</title>
+
+    <link rel="stylesheet" href="lib/css/bootstrap.min.css">
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+    <link rel="stylesheet" href="lib/css/jquery-ui.css">
+    <link rel="stylesheet" href="styles/app.css"/>
+    <script src="js/jquery-1.11.1.min.js"></script>
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">    
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">    
+    
+    <script src="lib/js/jquery-ui.min.js"></script>
+    
+    <script src="js/jstorage.js"></script>
+    <script src="js/firstCollegeGeneral.js"></script>
+    <script type="text/javascript" src="lib/js/bootstrap.min.js"></script>
+    <script type='application/javascript' src='lib/js/fastclick.js'></script>
+
+    <script type="text/javascript">
+        
+    </script>
+
+
+</head>
+
+<body>
+<div class="container-fluid">
+    <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active"><a href="#existing-connections" aria-controls="existing-connections"
+                                                  role="tab" data-toggle="tab">My Connections</a></li>
+        <li role="presentation"><a href="#connection-invites" aria-controls="connection-invites" role="tab"
+                                   data-toggle="tab">Invites</a></li>
+        <li role="presentation"><a href="#suggested-connections" aria-controls="suggested-connections" role="tab"
+                                   data-toggle="tab">Suggested</a></li>
+    </ul>
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active" id="existing-connections">
+            <div class="input-group">
+                <input type="text" id="example-input1-group2" name="example-input1-group2"
+                       class="form-control" placeholder="Search with name,roll or university">
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-effect-ripple btn-primary"><i class="fa fa-search"></i>
+                        </button>
+                    </span>
+            </div>
+            <ul class="list-group">
+                <li class="list-group-item">
+                    <div class="row">
+                        <div class="col-xs-3"><img src="http://api.randomuser.me/portraits/men/49.jpg"
+                                                   alt="Scott Stevens" class="img-responsive img-circle"/>
+                        </div>
+                        <div class="col-xs-6"><span class="name">Scott Stevens</span><br>
+                            <span class="description">The description of scott stevens</span>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="connection-invites">
+            <ul class="list-group">
+                <li class="list-group-item">
+                    <div class="row">
+                        <div class="col-xs-3"><img src="http://api.randomuser.me/portraits/men/49.jpg"
+                                                   alt="Scott Stevens" class="img-responsive img-circle"/>
+                        </div>
+                        <div class="col-xs-6"><span class="name">Scott Stevens</span><br>
+                            <span class="description">The description of scott stevens</span>
+                        </div>
+                        <div class="col-xs-1">
+                            <button type="button"><span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle-thin fa-stack-2x"></i>
+                                    <i class="fa fa-times fa-stack-1x"></i>
+                            </span></button>
+                        </div>
+                        <div class="col-xs-1" style="margin-left: 1em">
+                            <button type="button"><span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle-thin fa-stack-2x"></i>
+                                    <i class="fa fa-check fa-stack-1x"></i>
+                            </span></button>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="suggested-connections">
+            <ul class="list-group">
+                <li class="list-group-item">
+                    <div class="row">
+                        <div class="col-xs-3"><img src="http://api.randomuser.me/portraits/men/49.jpg"
+                                                   alt="Scott Stevens" class="img-responsive img-circle"/>
+                        </div>
+                        <div class="col-xs-6"><span class="name">Scott Stevens</span><br>
+                            <span class="description">The description of scott stevens</span>
+                        </div>
+                        <div class="col-xs-1">
+                            <button type="button"><span class="fa-stack fa-lg">
+                                <i class="fa fa-circle-thin fa-stack-2x"></i>
+                                <i class="fa fa-times fa-stack-1x"></i>
+                            </span></button>
+                        </div>
+                        <div class="col-xs-1" style="margin-left: 1em">
+                            <button type="button"><span class="fa-stack fa-lg">
+                                <i class="fa fa-circle-thin fa-stack-2x"></i>
+                                <i class="fa fa-user-plus fa-stack-1x"></i>
+                            </span></button>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,95 @@
+<style>
+    @import url(http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,300,400,700);
+
+    .jumbotron {
+        font-family: 'Open Sans', arial;
+        padding: 0;
+        background-color: white;
+    }
+
+    .dummyImage {
+        width: 100%;
+        min-height: 200px;
+        /*overflow: hidden;*/
+        /*position: absolute;*/
+        max-height: 200px;
+        top: 0;
+        /*z-index: 0;*/
+        margin-left: 0px;
+    }
+
+    .jumbotron h4.page-header {
+        /*  background: rgba(255, 255, 255, 0) linear-gradient(45deg, white 92%, transparent 45%) repeat scroll 0 0;
+          background: rgba(255, 255, 255, 0)  -webkit-linear-gradient(45deg, white 92%, transparent 45%) repeat scroll 0 0;
+          background: rgba(255, 255, 255, 0)  linear-gradient(45deg, white 92%, transparent 45%) repeat scroll 0 0;
+        */
+        /*margin-top: 56%;*/
+        padding: 11px 20px 0;
+        /*position: relative;*/
+        /*z-index: 2;*/
+        font-size: 24px;
+        line-height: 28px;
+        font-weight: normal;
+        border: 0;
+
+    }
+
+    /*.jumbotron h4.page-header img {
+        z-index: -1;
+        left: 0;
+        top: 0;
+        position: absolute;
+        width: 100%;
+    }*/
+
+    .scrollable-content {
+        background: white !important;
+    }
+
+    .jumbotron .small {
+        padding: 0 20px;
+        font-size: 15px;
+        word-wrap: break-word;
+    }
+
+    .jumbotron .small a {
+        display: block;
+        overflow: hidden;
+    }
+
+    .jumbotron .small a img {
+        width: 100%;
+        height: auto;
+        overflow: hidden;
+        position: absolute;
+        top: 0;
+        z-index: 0;
+        margin-left: 0px;
+        display: none;
+    }
+
+
+
+</style>
+
+<div >
+    
+
+<div class="jumbotron" style="min-height: 100%;padding-bottom:10px;">
+    
+    <!-- <img class="dummyImage" ng-src={{mediaImage(feed)}}> -->
+
+    <img class="dummyImage" ng-show="image != null" ng-src="http://collegeboard-env2.elasticbeanstalk.com/archive/document/{{image}}" onerror="this.onerror=null;this.style.display='none';"/>
+    <h4 class="page-header">{{title}}
+    </h4>
+    <p class="small">Published on : {{publishedDate}}</p>
+    <p class="small" align="justify">{{content}}</p>
+
+    
+    <a class="btn btn-primary btn-block" style="width: 30%;display: inline-block;margin-left:10px;" ng-show="urlLink != 'undefined' && urlLink != '' && urlLink != null" ng-click="loadURL(urlLink)" style="">Website</a>
+
+    <a class="btn btn-primary btn-block" style="width: 30%;display: inline-block;margin:auto;margin-left:10px;" ng-show="socialLink != 'undefined' && socialLink != '' && socialLink != null" ng-click="loadURL(socialLink)">Social media</a>
+
+
+
+</div>

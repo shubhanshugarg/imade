@@ -1,0 +1,94 @@
+<style>
+   
+    h3{
+        font-size: 1em;
+        padding: 0;
+        margin: 5px 0 0 0;
+        font-weight: 300;
+        color: #434343;
+    }
+    span{
+        font-size: 0.95em;
+        color: #aeaeae;
+    }
+    h5{
+        font-size: 1.3em;
+        margin: 0.5em 0 0 0;
+        font-weight: 400;
+    }
+    .notLiked{
+        color : grey;
+    }
+    .liked{
+        color : red;
+    }
+
+.badge {
+    padding: 0.2em 0.5em 0.2em 0.5em;
+    font-size: 0.7em;
+    /* font-weight: bold; */
+    /* white-space: nowrap; */
+    color: #ffffff;
+    background-color: #e60000;
+    -webkit-border-radius: 9px;
+    -moz-border-radius: 9px;
+    border-radius: 9px;
+}
+.item-title {
+    font-weight: 300;
+    font-size: 1.3em;
+    display: inline-block;
+}
+.item{
+padding-left: 1em;
+padding-bottom: 0.3em;
+    padding-top: 0.3em;
+    border-bottom: solid 1px gainsboro;
+    /* color: #654949; */
+    /* border: solid 1px; */
+    /*border-top: solid 1px gainsboro;*/
+}
+.item:nth-of-type(odd) {
+    background: #f2f2f2;
+}
+.item:nth-of-type(even) {
+    background: #e6e6e6;
+}
+</style>
+<div>
+        <div  class="item" style="border-top: solid 1px gainsboro;" ng-click="showGeneralCategoryFeed()">
+            <div>
+                <div>
+                    <header>
+                        <!-- <div class="notification menu-notification" id="notification{{title}}Count-{{item.categoryId}}"
+                             ng-hide="item.categoryNotifications == 0"> -->
+                        
+                              <i  style="float: right;margin-right: 1em;font-size: 3em;color: #c2c2a3;" class="fa fa-angle-right"></i>
+                        <div class="item-title">All</div>
+                         
+                    </header>
+                    <span>Browse all categories on wall</span>
+                </div>
+            </div>
+        </div>
+        <!-- <div ng-click="showGeneralCategoryFeed()">
+            General Feed
+        </div> -->
+        <div  class="item" ng-repeat="item in items" ng-click="showCategoryFeed($index)">
+            <div>
+                <div>
+                    <header>
+                        <!-- <div class="notification menu-notification" id="notification{{title}}Count-{{item.categoryId}}"
+                             ng-hide="item.categoryNotifications == 0"> -->
+                        <div class="badge"
+                             ng-hide="item.categoryNotifications == 0">{{item.categoryNotifications}}
+                        </div>
+                        <i  style="float: right;margin-right: 1em;font-size: 3em;color: #c2c2a3;" class="fa fa-angle-right"></i>
+                        <div class="item-title">{{item.categoryName}}</div>
+                          
+                    </header>
+                    <span class="item-desc">{{item.categoryDescription}}</span>
+                </div>
+            </div>
+        </div>
+    </div>

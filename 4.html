@@ -1,0 +1,116 @@
+<style>
+#fixedHeaderContent {
+    display: inline !important;
+  }
+  
+  .divHome {
+    border-bottom: 3px solid #901d77 !important;
+  }
+  
+  .divHome a {
+    color: #901d77 !important;
+  }
+  
+  .app-body {
+    background-color: #efefef;
+    background: #efefef;
+  }
+.backButtonArrow {
+        display: none;
+    }
+    @import url(http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,300,400,700);
+
+    .openSans {
+        font-family: 'Open Sans', sans-serif;
+    }
+    h3{
+        font-size: 1em;
+        padding: 0;
+        margin: 5px 0 0 0;
+        color: #434343;
+    }
+    
+    h5{
+        font-size: 1.3em;
+        margin: 0.5em 0 0 0;
+        font-weight: 400;
+    }
+    .likeCommentBar button{
+        width: 100%;
+border:none;
+background: white;
+    border: none;
+    }
+.notLiked{
+        
+        color: #8b8b8b;
+    }
+    .liked{
+        color : #009cf5;
+        
+    }
+    
+.IOScartCSS{
+    position:absolute;
+    right:10px;
+}
+.container-fluid {
+    width: 100%;
+    position: fixed;
+    margin: auto;
+    background-color: #ffffff;
+    text-align: center;
+    padding: 0px;
+   /* color: white;*/
+    top: 50px;
+  }
+ 
+  footer {
+    margin: auto;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+  }
+ 
+ 
+  .first {
+    color: red;
+  }
+</style>
+<!-- <div > -->
+<div  ng-repeat="feed in feeds | limitTo: paginationLimit()"  style="margin: 10px 10px 10px 10px;box-shadow: 0px 0px 4px #969696;">
+
+    <div ng-click="showDetail($index)" >
+    <div style="background: white;padding: 10px 10px 0px 10px" >
+        <h3>{{feed.postedByName}}</h3>
+        <span style="margin-right: 20pxfont-size: 0.75em;color: #aeaeae;">{{feed.contentSnippet}} </span>
+        <h5 style="word-wrap: break-word;">{{feed.title}}&nbsp...</h5>
+
+    </div>
+    <div  style="background: white;padding: 10px">
+        
+        <img style="width:100%;height:180px;" ng-src="http://collegeboard-env2.elasticbeanstalk.com/archive/document/{{feed.images.url1}}" onerror="this.onerror=null;this.style.display='none';"/>
+
+
+    </div>
+</div>
+    <!-- <a class=""  ng-class="{notLiked: feed.hasUserLiked == false,liked: feed.hasUserLiked == true}" ng-style="myStyle" ng-disabled="feed.hasUserLiked" ng-click="myStyle = {
+        'color' : 'red' };likeItem(feed.id);feed.hasUserLiked='true';">Like{{myStyle}}{{feed.likeCount}}</a>
+
+        <a  ng-click="go inside nothing differentas comment box floating">Comment{{feed.commentCount}}</a>
+ -->
+    <div class="likeCommentBar" style="background-color: #ffffff;padding-top:0.35em;padding-bottom: 0.35em;height: 2.2em;text-align: center;">
+                <span style="background-color: #ffffff;font-size: 1.3em;color: #8b8b8b; float: left;width: 15%;">
+                    <button ng-class="{notLiked: feed.hasUserLiked == false,liked: feed.hasUserLiked == true}" ng-style="myStyle" ng-disabled="feed.hasUserLiked" ng-click="myStyle={'color':'#009cf5'};likeItem(feed.id);feed.hasUserLiked='true';feed.likeCount=feed.likeCount+1;" style=""><i class="fa fa-thumbs-o-up "></i> </button></span>
+                <span style="background-color: #ffffff;font-size: 1.3em;color: #8b8b8b;float: left;width: 15%">
+                    <button class="notLiked" ng-click="showDetail($index)"><i class="fa fa-comments-o"></i></button></span>
+                <span style="background-color: #ffffff;font-size: 1.1em;color: #8b8b8b;float: right;padding-right: 1.2em;">
+                    <span style="color:#8b8b8b;font-size: 0.8em;">{{feed.seenCount }} VIEWS &bull;</span>
+                    <span style="color:#8b8b8b;font-size: 0.8em;">{{feed.likeCount}} LIKES &bull;</span>
+                    <span style="color:#8b8b8b;font-size: 0.8em;">{{feed.commentCount}} COMMENTS</span>
+                    </span>
+    </div>
+</div>
+    </br>
+    <a class="btn btn-primary btn-block" style="width: 80%;margin: auto" ng-show="hasMoreItems()" ng-click="showMoreItems()">Show more</a>
+</br></br></br>

@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>create post</title>
+
+    <link rel="stylesheet" href="lib/css/bootstrap.min.css">
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+    <link rel="stylesheet" href="lib/css/jquery-ui.css">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="styles/app.css"/>
+    <script src="js/jquery-1.11.1.min.js"></script>
+    
+    <script src="lib/js/jquery-ui.min.js"></script>
+    
+    <script src="js/jstorage.js"></script>
+    <script src="js/loopinNoticePost.js"></script>
+    <script type="text/javascript" src="lib/js/bootstrap.min.js"></script>
+    <script type='application/javascript' src='lib/js/fastclick.js'></script>
+
+    <script type="text/javascript">
+        
+    </script>
+
+<style>
+    @import url(http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,300,400,700);
+
+    .openSans {
+        font-family: 'Open Sans', sans-serif;
+    }
+    h3{
+        font-size: 1em;
+        padding: 0;
+        margin: 5px 0 0 0;
+        font-weight: 300;
+        color: #434343;
+    }
+    span{
+        font-size: 0.75em;
+        color: #aeaeae;
+    }
+    h5{
+        font-size: 1.3em;
+        margin: 0.5em 0 0 0;
+        font-weight: 400;
+    }
+.image-upload > input
+{
+    display: none;
+}
+
+</style>
+
+</head>
+
+<body>
+    <div ng-app="newApp" ng-controller="FeedPluginMasterController" style="background:white">
+    <select ng-model="isSelected" class="form-control" style="background:white;color:#AFACAC;">
+                <option value="">Select category *</option>
+                <option ng-repeat="category in allCategories" value="{{category.categoryId}}">
+                    {{category.categoryName}}
+                </option>
+            </select>
+<input type="text" class="text-input" placeholder="Subject *" ng-model="subject"
+               style="width:100%; height:2.5em;padding-left: 1em;border-style: none;border-bottom:2px solid #D4C8C8;background:white;">
+
+        <textarea class="textarea" rows="15" placeholder="Description" ng-model="message"
+                  style="width:100%; margin-bottom:10px;padding-left: 1em;border-style: none;border-bottom:2px solid #D4C8C8;"></textarea>
+        
+               <p id="enteredLink"></p>
+               <p id="enteredSocialLink"></p>
+               <img id="uploadPreview" src=""/>
+<span class="glyphicon glyphicon-link" style="font-size: 2em;margin-right:1em;" ng-click="enterLink()"></span>
+<span class="glyphicon glyphicon-random" style="font-size: 2em;margin-right:1em;" ng-click="enterSocialLink()" ></span>
+
+<div class="image-upload" style="display: inline-block;">
+    <label for="uploadImage">
+        <span class="glyphicon glyphicon-camera" style="font-size: 2em;"></span>
+
+    </label>
+
+    <input id="uploadImage" type="file" onchange="angular.element(this).scope().loadImageFile()" />
+</div>
+<button class="btn btn-primary btn-block" style="width: 30%;display: inline-block;margin-left:10px;" ng-click="submitForm()" ng-attr-disabled="{{disableButton}}">
+            {{postNoticeButtonText}}
+</button>
+</div>
+</body>
+</html>

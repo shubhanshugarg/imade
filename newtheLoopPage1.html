@@ -1,0 +1,161 @@
+<style>
+.backButtonArrow {
+        display: none;
+    }
+    @import url(http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,300,400,700);
+
+    .openSans {
+        font-family: 'Open Sans', sans-serif;
+    }
+    h3{
+        font-size: 1em;
+        padding: 0;
+        margin: 5px 0 0 0;
+        color: #434343;
+    }
+    
+    h5{
+        font-size: 1.3em;
+        margin: 0.5em 0 0 0;
+        font-weight: 400;
+    }
+    .likeCommentBar button{
+        width: 100%;
+border:none;
+background: white;
+    border: none;
+    }
+.notLiked{
+        
+        color: #8b8b8b;
+    }
+    .liked{
+        color : #009cf5;
+        
+    }
+    
+.IOScartCSS{
+    position:absolute;
+    right:10px;
+}
+.container-fluid {
+    width: 100%;
+    position: fixed;
+    margin: auto;
+    background-color: #ffffff;
+    text-align: center;
+    padding: 0px;
+   /* color: white;*/
+    top: 50px;
+  }
+ 
+  footer {
+    margin: auto;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+  }
+ 
+  .container {
+    width: 100%;
+    margin: auto;
+    background-color: #ffffff;
+    text-align: center;
+    padding: 10px;
+    /*color: white;*/
+  }
+ 
+  .first {
+    color: red;
+  }
+</style>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-xs-6 col-md-6" style="border-style: solid; border-width: 0px 1px 0px 0px; padding: 10px; border-color: #615a5a;">
+      <img src="https://kryptosda.kryptosmobile.com/kryptosds/imagegallery/31328b05-46e1-4d37-8133-4b2831dff63a.jpg" style="width:20px;height:20px; ">
+      <a style="opacity: 1; width=100%; " ng-click="showPostPage()" class="button">Create Post</a>
+ 
+    </div>
+    <div class="col-xs-6 col-sm-6" style="padding: 10px;">
+      <img src="https://kryptosda.kryptosmobile.com/kryptosds/imagegallery/1ff4c1be-952a-4cef-a5cc-ae6b2591df6f.jpg" style="width:20px;height:20px; ">
+      <a style="opacity: 1;  width=100%;" ng-click="showLoopCategoriesPage()" class="button">Categories</a>
+ 
+ 
+    </div>
+  </div>
+</div>
+
+      <br><br><br>
+<!-- <div > -->
+<div  ng-repeat="feed in feeds | limitTo: paginationLimit()"  style="margin: 10px 10px 10px 10px;box-shadow: 0px 0px 4px #969696;">
+
+    <div ng-click="showDetail($index)" >
+    <div style="background: white;padding: 10px 10px 0px 10px" >
+        <h3>{{feed.postedByName}}</h3>
+        <span style="margin-right: 20pxfont-size: 0.75em;color: #aeaeae;">{{feed.contentSnippet}} </span>
+        <h5 style="word-wrap: break-word;">{{feed.title}}&nbsp...</h5>
+
+    </div>
+    <div  style="background: white;padding: 10px">
+        
+        <img style="width:100%;height:180px;" ng-src="http://collegeboard-env2.elasticbeanstalk.com/archive/document/{{feed.images.url1}}" onerror="this.onerror=null;this.style.display='none';"/>
+
+
+    </div>
+</div>
+    <!-- <a class=""  ng-class="{notLiked: feed.hasUserLiked == false,liked: feed.hasUserLiked == true}" ng-style="myStyle" ng-disabled="feed.hasUserLiked" ng-click="myStyle = {
+        'color' : 'red' };likeItem(feed.id);feed.hasUserLiked='true';">Like{{myStyle}}{{feed.likeCount}}</a>
+
+        <a  ng-click="go inside nothing differentas comment box floating">Comment{{feed.commentCount}}</a>
+ -->
+    <div class="likeCommentBar" style="background-color: #ffffff;padding-top:0.35em;padding-bottom: 0.35em;height: 2.2em;text-align: center;">
+                <span style="background-color: #ffffff;font-size: 1.3em;color: #8b8b8b; float: left;width: 15%;">
+                    <button ng-class="{notLiked: feed.hasUserLiked == false,liked: feed.hasUserLiked == true}" ng-style="myStyle" ng-disabled="feed.hasUserLiked" ng-click="myStyle={'color':'#009cf5'};likeItem(feed.id);feed.hasUserLiked='true';feed.likeCount=feed.likeCount+1;" style=""><i class="fa fa-thumbs-o-up "></i> </button></span>
+                <span style="background-color: #ffffff;font-size: 1.3em;color: #8b8b8b;float: left;width: 15%">
+                    <button class="notLiked" ng-click="showDetail($index)"><i class="fa fa-comments-o"></i></button></span>
+                <span style="background-color: #ffffff;font-size: 1.1em;color: #8b8b8b;float: right;padding-right: 1.2em;">
+                    <span style="color:#8b8b8b;font-size: 0.8em;">{{feed.seenCount }} VIEWS &bull;</span>
+                    <span style="color:#8b8b8b;font-size: 0.8em;">{{feed.likeCount}} LIKES &bull;</span>
+                    <span style="color:#8b8b8b;font-size: 0.8em;">{{feed.commentCount}} COMMENTS</span>
+                    </span>
+    </div>
+</div>
+    </br>
+    <a class="btn btn-primary btn-block" style="width: 80%;margin: auto" ng-show="hasMoreItems()" ng-click="showMoreItems()">Show more</a>
+</br></br></br>
+<!-- </div> -->
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-2 col-md-2">
+        <img src="https://kryptosda.kryptosmobile.com/kryptosds/imagegallery/c20aee0f-0c4e-4a6c-983b-0d2aca7643d2.jpg" style="width:20px;height:20px; opacity: 0.8;">
+        <a href="#" style="opacity: 1;  width=100%; " class="button">Home</a>
+ 
+ 
+      </div>
+ 
+      <div class="col-xs-3 col-md-3">
+        <img src="https://kryptosda.kryptosmobile.com/kryptosds/imagegallery/e08183df-15d3-4f40-aaef-728f9050554c.jpg" style="width:20px;height:20px; opacity: 0.8;"></br>
+        <a href="#" style="opacity: 1;  width=100%; " class="button">Big Deal</a>
+ 
+      </div>
+ 
+      <div class="col-xs-2 col-md-2">
+        <img src="https://kryptosda.kryptosmobile.com/kryptosds/imagegallery/333d03c3-38e9-4053-82ab-0bb6aebbb31d.jpg" style="width:20px;height:20px; opacity: 0.8;">
+        <a href="#" style="opacity: 1;  width=100%; " class="button">News</a>
+      </div>
+ 
+      <div class="col-xs-3 col-md-3">
+        <img src="https://kryptosda.kryptosmobile.com/kryptosds/imagegallery/c920c7ba-f78b-4177-b587-1c150bbb9e46.jpg" style="width:20px;height:20px; opacity: 0.8;">
+        <a href="#" style="opacity: 1;  width=100%; " class="button">Directory</a>
+ 
+      </div>
+ 
+      <div class="col-xs-2 col-md-2">
+        <img src="https://kryptosda.kryptosmobile.com/kryptosds/imagegallery/5cf136ff-12f8-4ed9-80dc-fd44e9d1d2f6.jpg" style="width:20px;height:20px; opacity: 0.8;">
+        <a href="#" style="opacity: 1;  width=100%; " class="button">Places</a>
+ 
+      </div>
+    </div>
+  </div>
+</footer>

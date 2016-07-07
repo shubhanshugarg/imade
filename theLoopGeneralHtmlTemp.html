@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Sensation Feed</title>
+
+    <link rel="stylesheet" href="lib/css/bootstrap.min.css">
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+    <link rel="stylesheet" href="lib/css/jquery-ui.css">
+    <!-- <link rel="stylesheet" href="styles/app.css"/> -->
+    <script src="js/jquery-1.11.1.min.js"></script>
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">    
+    <script src="lib/js/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <script src="js/jstorage.js"></script>
+    <script src="js/firstCollege.js"></script>
+    <script type="text/javascript" src="lib/js/bootstrap.min.js"></script>
+    <script type='application/javascript' src='lib/js/fastclick.js'></script>
+
+    <script type="text/javascript">
+        
+    </script>
+
+<style>
+    
+    .jumbotron {
+        font-family: 'Open Sans', arial;
+        padding: 0;
+        background-color: white;
+    }
+
+    .dummyImage {
+        width: 100%;
+        min-height: 200px;
+        /*overflow: hidden;*/
+        /*position: absolute;*/
+        max-height: 200px;
+        top: 0;
+        /*z-index: 0;*/
+        margin-left: 0px;
+    }
+
+    .jumbotron h4.page-header {
+        /*  background: rgba(255, 255, 255, 0) linear-gradient(45deg, white 92%, transparent 45%) repeat scroll 0 0;
+          background: rgba(255, 255, 255, 0)  -webkit-linear-gradient(45deg, white 92%, transparent 45%) repeat scroll 0 0;
+          background: rgba(255, 255, 255, 0)  linear-gradient(45deg, white 92%, transparent 45%) repeat scroll 0 0;
+        */
+        /*margin-top: 56%;*/
+        padding: 11px 20px 0;
+        /*position: relative;*/
+        /*z-index: 2;*/
+        font-size: 24px;
+        line-height: 28px;
+        font-weight: normal;
+        border: 0;
+
+    }
+
+    /*.jumbotron h4.page-header img {
+        z-index: -1;
+        left: 0;
+        top: 0;
+        position: absolute;
+        width: 100%;
+    }*/
+
+    .scrollable-content {
+        background: white !important;
+    }
+
+    .jumbotron .small {
+        padding: 0 20px;
+        font-size: 15px;
+        word-wrap: break-word;
+    }
+
+    .jumbotron .small a {
+        display: block;
+        overflow: hidden;
+    }
+
+    .jumbotron .small a img {
+        width: 100%;
+        height: auto;
+        overflow: hidden;
+        position: absolute;
+        top: 0;
+        z-index: 0;
+        margin-left: 0px;
+        display: none;
+    }
+    
+    .likeCommentBar button{
+        width: 100%;
+border:none;
+background: white;
+    border: none;
+
+    }
+    .app-body
+{
+    background-color: #ffffff;
+}
+.notLiked{
+        
+        color: #8b8b8b;
+    }
+    .liked{
+        color : #009cf5;
+        
+    }
+    .comment{
+        
+        float: left;width: 50%;border-right: 1px solid;height:3em;
+    }
+    textarea:focus, input:focus{
+    outline: none;
+}
+
+
+</style>
+
+</head>
+
+<body>
+<div style="background: #009cf5;">
+
+   <div class="jumbotron" style="min-height: 100%;padding-bottom:10px;">
+    
+    <!-- <img class="dummyImage" ng-src={{mediaImage(feed)}}> -->
+
+    <img class="dummyImage" ng-show="image != null" ng-src="http://collegeboard-env2.elasticbeanstalk.com/archive/document/{{image}}" onerror="this.onerror=null;this.style.display='none';"/>
+    
+    <!-- <div style="background: white;padding-bottom: 20px;text-align: center;">
+                <span style="font-size: 1em;color: #aeaeae;float: left;width: 50%;border-right: 1px solid">
+                    <button ng-class="{notLiked: hasUserLiked == false,liked: hasUserLiked == true}" ng-style="myStyle" ng-disabled="hasUserLiked" ng-click="myStyle = {
+        'color' : 'red' };likeItem(noticeId);feed.hasUserLiked='true';likeCount=likeCount+1;" style=""><i class="fa fa-thumbs-o-up"></i> Like - {{likeCount}} </button></span>
+                <span style="font-size: 1em;color: #aeaeae;float: left;width: 50%">
+                    <button class="notLiked" ng-click="highlightCommentBox();"><i class="fa fa-comments-o"></i> Comment - {{commentCount}} </button></span>
+    </div> -->
+    <div class="likeCommentBar" style="background-color: #ffffff;padding-top:0.1em;padding-bottom: 0.1em;height: 1.8em;text-align: center;border-bottom:1px solid #aeaeae">
+                <span style="font-size: 0.7em;color: #8b8b8b; float: left;width: 50%;border-right: 1px dashed">
+                    <button ng-class="{notLiked: hasUserLiked == false,liked: hasUserLiked == true}" ng-style="myStyle" ng-disabled="hasUserLiked" ng-click="myStyle={'color':'#009cf5'};hasUserLiked='true';likeItem(noticeId);likeCount=likeCount+1;" style=""><i class="fa fa-thumbs-o-up fa-flip-horizontal"></i> Like - <span style="color:#8b8b8b">{{likeCount}}</span></button></span>
+                <span style="font-size: 0.7em;color: #8b8b8b;float: left;width: 50%">
+                    <button class="notLiked" ng-click="highlightCommentBox();"><i class="fa fa-comments-o"></i> Comment - <span style="color:#8b8b8b">{{commentCount}} </span></button></span>
+    
+    </div>
+
+    <h4 class="page-header">{{title}}
+    </h4>
+    <p class="small">Published on : {{publishedDate}}</p>
+    <p class="small" align="justify" ng-show="content != 'undefined'">{{content}}</p>
+
+    
+    <a class="btn btn-primary btn-block" style="width: 30%;display: inline-block;margin-left:10px;" ng-show="urlLink != 'undefined' && urlLink != '' && urlLink != null" ng-click="loadURL(urlLink)" style="">Website</a>
+
+    <a class="btn btn-primary btn-block" style="width: 30%;display: inline-block;margin:auto;margin-left:10px;" ng-show="socialLink != 'undefined' && socialLink != '' && socialLink != null" ng-click="loadURL(socialLink)">Social media</a>
+
+
+<div id="add-new-comment" class="row"
+                     style="border-top: 1px solid buttonface;border-bottom: 1px solid black;
+                     color: buttonface;width: 100%;z-index: 1;background-color: white;margin:auto;padding-top:0.5em;padding-bottom:0.5em;">
+                    <!-- Add new comment -->
+                    <div style="margin-left:0.8em;">
+                    <!-- <input type="text" id="commentBox" class="text-input" placeholder="Add Comment..." ng-model="comment"
+               style="width:70%;color:black;font-size: 0.6em;border:none;word-break: break-word;" ng-focus="commentBoxFocusIn();" ng-blur="commentBoxFocusOut();"> -->
+               <textarea id="commentBox" placeholder="Add Comment..." rows="2" ng-model="comment" style="width:70%;color:black;font-size: 0.8em;border:none;word-break: break-word;line-height: 101%;" ng-focus="commentBoxFocusIn();" ng-blur="commentBoxFocusOut();">
+            </textarea>
+               <button  style="background: white;border: none;width:20%;display:inline-block;border:none;height:100%;color:black;font-size:1em;" ng-click="submitComment(noticeId)" >
+            <i class="fa fa-check" ></i>
+            </button>
+        </div>
+                </div>
+    <div class="container" id="comments-container"
+                 style="background: white;margin-bottom: 10px">
+<div class="row" style="padding-top: 2px;border-bottom:1px solid #ddd;" ng-repeat="comment in commentData">
+<!-- <div  ng-repeat="comment in commentData" > -->
+            <!-- {{comment.userName}}{{comment.commentText}} -->
+            <div class="col-md-1 col-sm-1 col-xs-1" >
+            <i class="fa fa-user" style="font-weight: bold;color:#337ab7;"></i>
+            </div>
+            <div class="col-md-10 col-sm-10 col-xs-10" >
+                        
+            
+                        <div class=" " style="border:none;">
+                            <div class="">
+                                <header class="text-left">
+                                    <div class="comment-user small" style="font-weight: bold;color:#337ab7;">{{comment.userName}}</div>
+                                    <!-- <time class="comment-date" datetime="16-12-2014 01:05"><i class="fa fa-clock-o"></i>
+                                        Dec 16, 2014
+                                    </time> -->
+                                </header>
+                                <div class="comment-post">
+                                    <p class="small">
+                                        {{comment.commentText}}
+                                    </p>
+                                </div>
+                                <!--<p class="text-right"><a href="#" class="btn btn-default btn-sm"><i
+                                        class="fa fa-reply"></i> reply</a></p>-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        <div class="row" style="padding-top: 2px;border-bottom:1px solid #ddd;" ng-show="userAddedInstantaneousComment != undefined" >
+                  <div class="col-md-1 col-sm-1 col-xs-1" >
+            <i class="fa fa-user" style="font-weight: bold;color:#337ab7;"></i>
+            </div>  
+                    <div class="col-md-10 col-sm-10 col-xs-10">
+                        <div class="" style="border:none;">
+                            <div class="">
+                                <header class="text-left">
+                                    <div class="comment-user small" style="font-weight: bold;color:#337ab7;">{{userNameAddedInstantaneousComment}}</div>
+                                    <!-- <time class="comment-date" datetime="16-12-2014 01:05"><i class="fa fa-clock-o"></i>
+                                        Dec 16, 2014
+                                    </time> -->
+                                </header>
+                                <div class="comment-post">
+                                    <p class="small">
+                                         {{userAddedInstantaneousComment}}
+                                    </p>
+                                </div>
+                                <!--<p class="text-right"><a href="#" class="btn btn-default btn-sm"><i
+                                        class="fa fa-reply"></i> reply</a></p>-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+        
+
+       <!--  <div>
+            {{userNameAddedInstantaneousComment}}
+            {{userAddedInstantaneousComment}}
+        </div> -->
+        <!-- <div id="add-new-comment" class="row"
+                     style="position: fixed;bottom : 2em;border-top: 1px solid buttonface;border-bottom: 1px solid buttonface;
+                     color: buttonface;width: 100%;z-index: 1;;background-color: white;">
+                    
+                    <input type="text" id="commentBox" class="text-input" placeholder="Comment" ng-model="comment"
+               style="width:70%;color:black;font-size: 0.6em;">
+               <button  style="width:20%;display:inline-block;border:none;height:100%;color:black;font-size:0.6em;" ng-click="submitComment(noticeId)" >
+            Post
+            </button>
+                </div> -->
+</div>
+
+<!-- <div  ng-repeat="comment in commentData" >
+            {{comment.userName}}{{comment.commentText}}
+        </div>
+
+        <div>
+            {{userNameAddedInstantaneousComment}}
+            {{userAddedInstantaneousComment}}
+        </div>
+
+        
+        <input type="text" id="commentBox" class="text-input" placeholder="Comment" ng-model="comment"
+               style="width:100%;">
+               <button modifier="large" ng-click="submitComment(noticeId)" >
+            Post
+        </button> -->
+
+</div>
+</div>
+</body>
+</html>

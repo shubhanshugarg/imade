@@ -1,0 +1,90 @@
+<style>
+.backButtonArrow {
+        display: none;
+    }
+    @import url(http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,300,400,700);
+
+    .openSans {
+        font-family: 'Open Sans', sans-serif;
+    }
+    h3{
+        font-size: 1em;
+        padding: 0;
+        margin: 5px 0 0 0;
+        color: #434343;
+    }
+    
+    h5{
+        font-size: 1.3em;
+        margin: 0.5em 0 0 0;
+        font-weight: 400;
+    }
+    .likeCommentBar button{
+        width: 100%;
+border:none;
+background: white;
+    border: none;
+    }
+.notLiked{
+        
+        color: #8b8b8b;
+    }
+    .liked{
+        color : #009cf5;
+        
+    }
+    
+
+
+</style>
+
+<div  style="color: white;
+    background: #0099e6;
+    font-size: 2.5em;
+    position: fixed;
+    border-radius: 0.5em;
+    bottom: 0.8em;
+    right: 0.25em;
+    padding: 0.5em;
+    z-index: 5;" ng-click="showPostPage()" ><i class="fa fa-pencil"></i>
+</div>
+
+
+        <div style="display: block;
+    text-align: right;
+    margin-bottom: 0.6em;
+    margin-top: 0.5em;
+
+    font-size: 1.2em;">
+    <img  style="display: inline-block;margin-right: 0.5em;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoV2luZG93cykiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6N0UwMDg2QjZGQ0JGMTFFNThBM0FENDZFNzE3NUQ3OTUiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6N0UwMDg2QjdGQ0JGMTFFNThBM0FENDZFNzE3NUQ3OTUiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo3RTAwODZCNEZDQkYxMUU1OEEzQUQ0NkU3MTc1RDc5NSIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo3RTAwODZCNUZDQkYxMUU1OEEzQUQ0NkU3MTc1RDc5NSIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/Pozq/3EAAADbSURBVHjaYvz//z8DLQETA43B0LcAGwgA4v9k4gBQnCJjdMALxE+A2INY1yAZ5A3Vy4vPgglAvALK9iPB5T5Qw9aAzMBlgQkQfwJiCVLCE80wKSD+AjIL3QIWID4LxBlQ/hwywn8G1MAcqFksyBYUAPExIGYkNUVgiVRQyjwJMhNmgSwQ/wRiXajkaQpS0SmoI/WB+AfIbBBnAxDfAOIKctI0rqKGkZGxB0ipMEJtxgcIBdv/QV9UiOGRIypJE4q4DTgsEQfiTYT0ExMHo/XBELeAcbTSJwQAAgwA89ev0r1EHaUAAAAASUVORK5CYII="/>
+<h3 style="margin-right:0.5em;float: right;clear: right;" ng-click="showLoopCategoriesPage()" >Loop categories</h3>
+</div>
+<div >
+<div  ng-repeat="feed in feeds | limitTo: paginationLimit()"  style="margin: 10px 10px 10px 10px;box-shadow: 0px 0px 4px #969696;">
+    <div ng-click="showDetail($index)" >
+    <div style="background: white;padding: 10px 10px 0px 20px" >
+        <h3>{{feed.postedByName}}</h3>
+        <span style="margin-right: 20pxfont-size: 0.75em;color: #aeaeae;">Posted {{feed.contentSnippet}} </span><span><img  style="vertical-align: sub;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoV2luZG93cykiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6NTE1MjZBNDlFMDkyMTFFNTgwODVERDFGQjM1NjE2NkEiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6NTE1MjZBNEFFMDkyMTFFNTgwODVERDFGQjM1NjE2NkEiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo1MTUyNkE0N0UwOTIxMUU1ODA4NUREMUZCMzU2MTY2QSIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo1MTUyNkE0OEUwOTIxMUU1ODA4NUREMUZCMzU2MTY2QSIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PuhdFFkAAAEgSURBVHja1NM/SEJRFMdxn1hLQw1iEEJSUJNCNfZnkaZocIoIXGqJwCGJrDHao2gQGnMRoQcWBC4Nlbo2CAZRGA7RVEMtDa/vld+Dh9LkEB74LO+ee+65h/ssx3F83YTf12X8f4GAbdvt32awijjGYeEFN8ij/FcHIZyhgjSCyMoAUrhHDuH2AlO4xQb6dNokMthBDJfKXcMdZt0C07jGhBJ+sIkonrX+hW18K2cUV1gwBQ4x7LnKBx6xrsQi9vGEN0/eEI5MgQNtcmMQYzjHp2ZT10y8B5lu9kyBKpbR1EI/TjTtCEZwgVMN08Q7Eii5QzRDmdOpZgZLqGFLV3nAinILmDebW+/A01IDSRzrHSxiV2uv6qrjHVi9/zP9CjAATJc+BTj1u7gAAAAASUVORK5CYII="/>&nbsp;Views:&nbsp;</span><span style="font-size: 0.75em;color: #434343">{{feed.seenCount }}</span>
+        <h5>{{feed.title}}</h5>
+
+    </div>
+    <div  style="background: white;padding: 5px">
+        <img style="width:100%;height:180px;" ng-src="http://collegeboard-env2.elasticbeanstalk.com/archive/document/{{feed.images.url1}}" onerror="this.onerror=null;this.style.display='none';"/>
+
+
+    </div>
+</div>
+    <!-- <a class=""  ng-class="{notLiked: feed.hasUserLiked == false,liked: feed.hasUserLiked == true}" ng-style="myStyle" ng-disabled="feed.hasUserLiked" ng-click="myStyle = {
+        'color' : 'red' };likeItem(feed.id);feed.hasUserLiked='true';">Like{{myStyle}}{{feed.likeCount}}</a>
+
+        <a  ng-click="go inside nothing differentas comment box floating">Comment{{feed.commentCount}}</a>
+ -->
+    <div class="likeCommentBar" style="background-color: #ffffff;padding-top:0.35em;padding-bottom: 0.35em;height: 2.2em;text-align: center;">
+                <span style="background-color: #ffffff;font-size: 1.1em;color: #8b8b8b; float: left;width: 50%;border-right: 1px dashed">
+                    <button ng-class="{notLiked: feed.hasUserLiked == false,liked: feed.hasUserLiked == true}" ng-style="myStyle" ng-disabled="feed.hasUserLiked" ng-click="myStyle={'color':'#009cf5'};likeItem(feed.id);feed.hasUserLiked='true';feed.likeCount=feed.likeCount+1;" style=""><i class="fa fa-thumbs-o-up fa-flip-horizontal"></i> Like - <span style="color:#8b8b8b">{{feed.likeCount}}</span></button></span>
+                <span style="background-color: #ffffff;font-size: 1.1em;color: #8b8b8b;float: left;width: 50%">
+                    <button class="notLiked" ng-click="showDetail($index)"><i class="fa fa-comments-o"></i> Comment - <span style="color:#8b8b8b">{{feed.commentCount}} </span></button></span>
+    </div>
+</div>
+    <a class="btn btn-primary btn-block" style="width: 80%;margin: auto" ng-show="hasMoreItems()" ng-click="showMoreItems()">Show more</a>
+</div>

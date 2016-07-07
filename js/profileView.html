@@ -1,0 +1,228 @@
+<style>
+    .backButtonArrow {
+        display: none;
+    }
+    
+    .app-body {
+        background-color: #efefef;
+        background: #efefef;
+    }
+    
+    @import url(http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,300,400,700);
+    .openSans {
+        font-family: 'Open Sans', sans-serif;
+    }
+    
+    
+    
+    .select-style {
+        padding: 0px;
+        width: 100%;
+        overflow: hidden;
+        background: #fff url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoV2luZG93cykiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6MUY0NTAyOTVEQUYwMTFFNTg4RTlDRDVBN0Y4OTZGMTUiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6MUY0NTAyOTZEQUYwMTFFNTg4RTlDRDVBN0Y4OTZGMTUiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDoxRjQ1MDI5M0RBRjAxMUU1ODhFOUNENUE3Rjg5NkYxNSIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDoxRjQ1MDI5NERBRjAxMUU1ODhFOUNENUE3Rjg5NkYxNSIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/Pl5yPn8AAACSSURBVHjaYvz//z8DuYBxiGueNGmSMJAqB+KavLy8X9gUA9WwA6kWIG4HqnnHhCS3CohLQTRQERsOjauBuASqlgFZM0jjeyD2RzcASaMvVE0Zhp+BioyA1B4gFgTiTUAcClKDptEF6ORzWAMMzYDNUGEMjThDG80ABmwa8UYVkgEM2DQSjGeoAQzYNA7h5AkQYAAnAF4pMYwWiQAAAABJRU5ErkJggg==') no-repeat 97% 50%;
+    }
+    
+    .select-styleSmall {
+        padding: 0px;
+        width: 100%;
+        overflow: hidden;
+        background: #fff url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoV2luZG93cykiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6MUY0NTAyOTVEQUYwMTFFNTg4RTlDRDVBN0Y4OTZGMTUiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6MUY0NTAyOTZEQUYwMTFFNTg4RTlDRDVBN0Y4OTZGMTUiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDoxRjQ1MDI5M0RBRjAxMUU1ODhFOUNENUE3Rjg5NkYxNSIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDoxRjQ1MDI5NERBRjAxMUU1ODhFOUNENUE3Rjg5NkYxNSIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/Pl5yPn8AAACSSURBVHjaYvz//z8DuYBxiGueNGmSMJAqB+KavLy8X9gUA9WwA6kWIG4HqnnHhCS3CohLQTRQERsOjauBuASqlgFZM0jjeyD2RzcASaMvVE0Zhp+BioyA1B4gFgTiTUAcClKDptEF6ORzWAMMzYDNUGEMjThDG80ABmwa8UYVkgEM2DQSjGeoAQzYNA7h5AkQYAAnAF4pMYwWiQAAAABJRU5ErkJggg==') no-repeat 93% 50%;
+    }
+    
+    .select-styleSmall select {
+        padding: 12px 8px;
+        width: 130%;
+        border: none;
+        box-shadow: none;
+        background: transparent;
+        background-image: none;
+        -webkit-appearance: none;
+        color: #999 !important;
+    }
+    
+    .select-style select {
+        padding: 12px 8px;
+        width: 130%;
+        border: none;
+        box-shadow: none;
+        background: transparent;
+        background-image: none;
+        -webkit-appearance: none;
+        color: #999 !important;
+    }
+    
+    .select-style select:focus {
+        outline: none;
+    }
+    
+    .select-styleSmall select:focus {
+        outline: none;
+    }
+    
+    input[type="text"] {
+        color: #9599a7 !important;
+        padding: 12px 12px;
+        border: 0px;
+    }
+    
+    .form-control {
+        height: auto !important;
+    }
+    
+    .icons {
+        width: 21%;
+    }
+    
+    @media only screen and (min-device-width: 320px) and (max-device-width: 568px) {
+        input[type="text"] {
+            color: #9599a7 !important;
+            padding: 12px 8px;
+            border: 0px;
+        }
+        .icons {
+            width: 24%;
+        }
+    }
+    
+    .overlay .overlay-inner > .overlay-background {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 1040;
+        margin: -5px -5px -5px -5px;
+        background: rgba(255, 255, 255, .8);
+        opacity: 0.01;
+    }
+    /*==================================================
+ * Effect 7
+ * ===============================================*/
+    
+    .effect7 {
+        position: relative;
+        -webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+        -moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+    }
+    
+    .effect7:before,
+    .effect7:after {
+        content: "";
+        position: absolute;
+        z-index: -1;
+        -webkit-box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+        -moz-box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+        top: 0;
+        bottom: 0;
+        left: 10px;
+        right: 10px;
+        -moz-border-radius: 100px / 10px;
+        border-radius: 100px / 10px;
+    }
+    
+    .effect7:after {
+        right: 10px;
+        left: auto;
+        -webkit-transform: skew(8deg) rotate(3deg);
+        -moz-transform: skew(8deg) rotate(3deg);
+        -ms-transform: skew(8deg) rotate(3deg);
+        -o-transform: skew(8deg) rotate(3deg);
+        transform: skew(8deg) rotate(3deg);
+    }
+    .list-group{
+        margin-bottom: 0px !important;
+    }
+</style>
+<div style="padding:0px;" class="openSans">
+    <div style="padding:40px 20px 20px 20px;width:100%;height:300px;background: url('') no-repeat center -20px;">
+
+
+        <div style="padding:15px 0px;text-align: center;font-size:18px;width:auto;margin-top: 40px;">
+            <!--<img src='images/profileImage.png' />-->
+            <div style="
+    position: absolute;
+    top: 65px;
+    left: 0;
+    z-index: 100;
+    /* text-align: center; */
+    /* margin: auto; */
+    width: 100%;
+">
+                <img style="height:100%;width:auto;max-height: 90px;max-width: 90px;overflow: hidden;border-radius: 3px;/* margin: initial; */" id="userImage" ng-src='{{userProfilePic}}' />
+                <!-- <div style="width:100%;position:absolute;bottom:4px;text-align: center;font-size:12px;color:#fff;" ng-show="showUploadPhoto" class="ng-hide"><span>Upload Photo</span></div> -->
+            </div>
+
+            <div style="background: #fff;border-radius:3px;margin-top: 15px;padding: 60px 5px 12px 5px;" class="effect7">
+                <div style="text-align:center;line-height: 23px;">
+                    <div style="color:#434443;font-weight: 100;"><span ng-hide="showdefaultDN">{{userProfileDN}}</span><span ng-show="showdefaultDN">Display Name</span></div>
+                    
+                    <div style="color:#434443;font-weight: bold;"><span style='display: inline-block;' ng-hide="showdefaultUR">{{studentRole}}</span><span style='display: inline-block;' ng-show="showdefaultUR">Role</span></div>
+                   
+                    <div style="color:#6f6f6f;font-size:13px;font-weight: 100;"><span style='display: inline-block;' ng-hide="showdefaultInstitute" ng-bind='InstitutionName'></span><span style='display: inline-block;' ng-show="showdefaultInstitute"></span></div>
+
+                </div>
+                <!-- <div style="position:absolute;top:5px;z-index: 200;right:8px;color:#3eada7;font-size:12px;font-weight: bold;" ng-click="editProfile()" class='linkColor'><i class="fa fa-pencil"></i>&nbsp;Edit</div> -->
+            </div>
+
+        </div>
+        <div style="background: #fff;border-radius:3px;padding: 12px;" class="effect7">
+            <div style="color:#6f6f6f;font-size: 15px;">Personal Details</div>
+            <div class="list-group" style="margin-top: 5px;">
+                <div class='list-group-item' style='padding:7px 0;color:#4344443;border:none;font-weight:bold;'>Gender<span class='pull-right' style="color:#6f6f6f;font-weight:normal" ng-bind="gender"></span></div>
+
+                <!-- <div class='list-group-item' style='padding:7px 0;color:#4344443;border:none;font-weight:bold;'>DoB<span class='pull-right' style="color:#6f6f6f;font-weight:normal" ng-bind='dob'></span></div> -->
+
+                <!-- <div class='list-group-item' style='padding:7px 0;color:#4344443;border:none;font-weight:bold;'>Mobile Number<span class='pull-right' style="color:#6f6f6f;font-weight:normal" ng-bind='phn'></span></div>
+
+                <div class='list-group-item' style='padding:7px 0;color:#4344443;border:none;font-weight:bold;'>Email<span class='pull-right' style="color:#6f6f6f;font-weight:normal" ng-bind="useremail"></span></div> -->
+
+                <div class='list-group-item' style='padding:7px 0;color:#4344443;border:none;font-weight:bold;'>Facebook ID<span class='pull-right' style="color:#6f6f6f;font-weight:normal" ng-bind='fbID'></span></div>
+
+                <div class='list-group-item' style='padding:7px 0;color:#4344443;border:none;font-weight:bold;'>LinkedIn ID<span class='pull-right' style="color:#6f6f6f;font-weight:normal" ng-bind='linkedInID'></span></div>
+
+                <div class='list-group-item' style='padding:7px 0;color:#4344443;border:none;font-weight:bold;'>Google ID<span class='pull-right' style="color:#6f6f6f;font-weight:normal" ng-bind='googleID'></span></div>
+
+            </div>
+            <!-- <div style="position:absolute;top:5px;right:8px;color:#3eada7;font-size:12px;font-weight: bold;" ng-click="editPersonalInfo()" class='linkColor'><i class="fa fa-pencil"></i>&nbsp;Edit</div> -->
+        </div>
+        <div style="background: #fff;border-radius:3px;margin-top: 15px;padding: 12px;" class="effect7">
+            <div style="color:#6f6f6f;font-size: 15px;font-weight: 100;">Education</div>
+            <div class="list-group" style="margin-top: 5px;">
+                <div class='list-group-item' style='padding:7px 0;color:#4344443;border:none;font-weight:bold;'>Roll #<span class='pull-right' style="color:#6f6f6f;font-weight:normal" ng-bind='rollNo'></span></div>
+                <div class='list-group-item' style='padding:7px 0;color:#4344443;border:none;font-weight:bold;'>Degree/Course<span class='pull-right' style="color:#6f6f6f;font-weight:normal" ng-bind="course"></span></div>
+                <div class='list-group-item' style='padding:7px 0;color:#4344443;border:none;font-weight:bold;'>Major/Stream<span class='pull-right' style="color:#6f6f6f;font-weight:normal" ng-bind="stream">Male</span></div>
+                <!--<div class='list-group-item' style='padding:7px 0;color:#4344443;border:none;font-weight:bold;'>Course Taken<span class='pull-right' style="color:#6f6f6f;font-weight:normal">Male</span></div>-->
+                <div class='list-group-item' style='padding:7px 0;color:#4344443;border:none;font-weight:bold;'>GPA<span class='pull-right' style="color:#6f6f6f;font-weight:normal" ng-bind="gpa"></span></div>
+                
+            </div>
+            <!-- <div style="position:absolute;top:5px;right:8px;color:#3eada7;font-size:12px;font-weight: bold;" ng-click="editEducation()" class='linkColor'><i class="fa fa-pencil"></i>&nbsp;Edit</div> -->
+        </div>
+        <div style="background: #fff;border-radius:3px;margin-top: 15px;padding: 12px;" class="effect7" ng-show="showSocialTab">
+            <div style="color:#6f6f6f;font-size: 15px;font-weight: 100;">Social</div>
+            <div class="list-group" style="margin-top: 5px;">
+                <!--<div class='list-group-item' style='padding:7px 0;color:#4344443;border:none;font-weight:bold;'>Student Orgs<span class='pull-right' style="color:#6f6f6f;font-weight:normal" ng-bind='studentOrgs'></span></div>
+                <div class='list-group-item' style='padding:7px 0;color:#4344443;border:none;font-weight:bold;'>Interests<span class='pull-right' style="color:#6f6f6f;font-weight:normal" ng-bind='interests'></span></div>
+                <div class='list-group-item' style='padding:7px 0;color:#4344443;border:none;font-weight:bold;'>Connections<span class='pull-right' style="color:#6f6f6f;font-weight:normal" ng-bind='Connection'></span></div>-->
+                <div class='list-group-item' style='padding:0px 7px;color:#4344443;border:none;font-weight:bold;'>Interests<span style="color:#6f6f6f;font-weight:normal">
+                        <div><span ng-repeat="i in interests" style="padding:4px;border:1px solid #cc0000;border-radius:4px;float:left;margin-top: 3px;margin-left: 3px;">{{i.name}}</span>
+                        </div>
+                        <div style="clear:both"></div>
+                        
+                </div>
+            </div>
+            <!-- <div style="position:absolute;top:5px;right:5px;color:#3eada7;font-size:12px;font-weight: bold;" class='linkColor' ng-click="editSocialPage()"><i class="fa fa-pencil"></i>&nbsp;Edit</div> -->
+        </div>
+
+        <!-- <div style="background: #fff;border-radius:3px;margin-top: 15px;padding: 12px;" class="effect7" ng-hide="showSocialTab">
+            <div style="color:#6f6f6f;font-size: 15px;font-weight: 100;">Social</div>
+            <br>
+            <div style="text-align:center;font-weight:bold;">LET'S SET YOU UP FOR</div>
+            <div style="text-align:center;color:#6f6f6f;">Student Orgs, Interests and Connections</div>
+            <div style="text-align:center;" ng-click="facebookSync()"><img src='images/facebook.jpg' /></div> -->
+            <!--<div style="text-align:center;" ng-click="linkedInSync()"><img src='images/linkedin.jpg' /></div>-->
+        <!-- </div> -->
+        <br>
+    </div>
+</div>

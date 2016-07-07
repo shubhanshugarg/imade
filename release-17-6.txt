@@ -1,0 +1,1594 @@
+function pageprocessortheLoop(pagedef, $scope, $routeParams, $compile, $http, $rootScope, $sce, $window, $location) {
+  var data1 = $compile($(pagedef.datatemplate))($scope);
+  $("#appContent").append(data1);
+
+
+  var data2 = '<div class="container-fluid" style="border-bottom:1px solid #bcbcbc;"><div class="row"><div class="col-xs-6 col-md-6" style="border-style: solid; border-width: 0px 1px 0px 0px; padding:8px 0px; border-color: #efefef;color:#232323;text-align:center;"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAMAAABg3Am1AAAAe1BMVEUAAAAjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMmeYkoAAAAKHRSTlMA9QmjqikN0tUtBPvw5EAR+OuIRdZsxsKfgzPJsSOOfVwV2th2TD4aT9xFzwAAAZ5JREFUSMfNltuOgyAURQEvrYDWS9Wxt2nnuv//C4cedDIJkePj7CdI9oKFxKgQukqsXEmjxJJ8GagW66lnQPfJmPSaxhVgJLNDnhD+QrME5kutZe6nQDmWQPKcW0gtojm4/q4Qxc7vUUOqaD9/9jM3yBzRCyEZgHyuNCxKXDQBjA/Kzk9GnB8ExNc3gCXiVCKN70D9fTEBdcefYfbZu/O2gK2yI/CiPcA9HyL8PUQA6h8LP341oP4MRH0oV+P6uQiB0IdS7Pz6SikCVp/PPMmWfiMbAhgf1/c+qkZNAOOzX86rXHkGeJ8YcPi7frYnnwBgfAKA8QkAxicAGJ8QYHxCgPEJgZhPDFArPqvADWgCnwig3wF7mn2OtH4cuBsAZRX4rAI3NKMjul8fBriWOB9aZ/U5+3BAB0zubbcwkvocoC8wD3cVA0A+LJAbDKq77Gr/5eCB3tlLuDTDh5vywBmUdKKb4AH1BtTH+0kLH36Hdmi/qb0VoPwHoH4CeiugJaxIYSq1MZ1BGvw6xGKAin5OtmdSTqxKrdwUm1Ra/ABr3UFzY2HLPQAAAABJRU5ErkJggg==" style="width:16px;opacity:1;margin-top:-2px;"><a ng-click="showPostPage()" style="margin-left:6px;margin-top:4px;color:#232323;opacity:1;font-size:12px;">Create Post</a></div><div class="col-xs-6 col-sm-6" style="padding:8px 0px;color:#232323;text-align:center;"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwAQMAAABtzGvEAAAABlBMVEUAAAAjIyODokdlAAAAAXRSTlMAQObYZgAAACBJREFUGNNjwAf+M/wHAhh1mOEAAwMzVgpNJR4w3O0DAEU/Tg2sIyCsAAAAAElFTkSuQmCC" style="width:16px;opacity:1;margin-top:-2px;"><a ng-click="showLoopCategoriesPage()" style="margin-left:6px;margin-top:4px;color:#232323;opacity:1;font-size:12px;">Categories</a></div></div></div>';
+
+  var htmlView = $compile($(data2))($scope);
+  $("#fixedHeaderContent").html(htmlView);
+  $scope.msg = "Loading...";
+
+
+  $scope.feeds = "";
+  var user_id = "963";
+  var fd = new FormData();
+  fd.append('userId', user_id);
+  var mainCategory = "Notices";
+  var categoryId = "99999";
+  $rootScope.generalCategoryId = categoryId;
+  var categoryName = "generalWall";
+  $rootScope.generalCategoryName = categoryName;
+  //below line for circle scrolling
+  $("#IOSCART").css({
+    "top": $(".app-content .scrollable-content").scrollTop() + $(window).height() - 150 + "px"
+  });
+  $(".scrollable-content").scroll(function() {
+    $("#IOSCART").stop().animate({
+      "top": $(".app-content .scrollable-content").scrollTop() + $(window).height() - 150 + "px"
+    }, 400);
+  });
+  //circle scrolling closed 
+  var categoryDescription = "All notices";
+  if ($rootScope.categoryId && $rootScope.categoryName) {
+    var categoryIdToFetch = $rootScope.categoryId;
+    var categoryNameToFetch = $rootScope.categoryName;
+  } else {
+    var categoryIdToFetch = $rootScope.generalCategoryId;
+    var categoryNameToFetch = $rootScope.generalCategoryName;
+  }
+  if ($.jStorage.get("feedEntriesData" + mainCategory + categoryIdToFetch + categoryNameToFetch)) {
+
+    var feedEntriesData = JSON.parse($.jStorage.get("feedEntriesData" + mainCategory + categoryIdToFetch + categoryNameToFetch));
+    feedEntriesData = $.map(feedEntriesData, function(value, index) {
+      return [value];
+    });
+    $scope.feeds = feedEntriesData;
+    executeOnSucess(feedEntriesData);
+
+  }
+  $.blockUI({
+    message: '<div id="floatingBarsG"><div class="blockG" id="rotateG_01"></div><div class="blockG" id="rotateG_02"></div><div class="blockG" id="rotateG_03"></div><div class="blockG" id="rotateG_04"></div><div class="blockG" id="rotateG_05"></div><div class="blockG" id="rotateG_06"></div><div class="blockG" id="rotateG_07"></div><div class="blockG" id="rotateG_08"></div></div><div></div>'
+  });
+
+  $scope.getCount = function(mainCategory) {
+    if ($.jStorage.get("profileData")) {
+      var profileData = $.parseJSON($.jStorage.get("profileData"));
+      var catIds = [];
+      if (profileData != null) {
+        $.each(profileData.interestedCategories, function(key, value) {
+          catIds.push(value.categoryId);
+        });
+        var catIdsString = catIds.join(",");
+
+        var postedDates = [];
+
+        $.each(profileData.interestedCategories, function(key, value) {
+          if ($.jStorage.get("feedEntriesData" + mainCategory + value.categoryId + value.categoryName)) {
+            var categoryFeed = JSON.parse($.jStorage.get("feedEntriesData" + mainCategory + value.categoryId + value.categoryName));
+            //alert(categoryFeed);
+            if (typeof categoryFeed[0] !== 'undefined' && typeof categoryFeed[0].publishedDate !== 'undefined') {
+              postedDates.push(categoryFeed[0].publishedDate);
+            } else {
+              postedDates.push(0000000000000);
+            }
+
+          } else {
+            postedDates.push(0000000000000);
+          }
+
+        });
+
+        var postedDatesString = postedDates.join(",");
+        if (mainCategory == "Notices") {
+          getCountUrl = "http://collegeboard-env2.elasticbeanstalk.com/noticeInfo/getNoticesInfoForCategories?userId=" + profileData.user_id + "&categoriesToFetch=" + catIdsString + "&dates=" + postedDatesString;
+        }
+        $.get(getCountUrl, function(response) {
+          $.each(profileData.interestedCategories, function(key, value) {
+            //$.jStorage.get('feedEntriesData' + mainCategory + value.categoryId + value.categoryName)
+            $.jStorage.set("#notification" + mainCategory + "Count-" + value.categoryId, 0);
+            //window.localStorage['#notification' + mainCategory + 'Count-' + value.categoryId] = 0;
+          });
+
+
+          $.each(response, function(key, value) {
+            $('#notification' + mainCategory + 'Count-' + key).text(value);
+            if (value > 0) {
+              $('#notificationNew' + mainCategory).text("New " + mainCategory);
+            }
+            $.jStorage.set("#notification" + mainCategory + "Count-" + key, value.mostRecentNoticeCount);
+            $.jStorage.set("#notificationTimestamp" + mainCategory + "Date-" + key, value.mostRecentNoticeDate);
+
+          });
+
+
+        }).fail(function() {
+
+        });
+      }
+    }
+    //alert("Hello");
+
+  }
+  $scope.getCount("Notices");
+
+
+  $scope.showPostPage = function() {
+
+    $location.path('/app/theLoop/theLoopPage3');
+
+  };
+  $scope.showLoopCategoriesPage = function() {
+    //alert("here");
+    $location.path('/app/theLoop/theLoopPage4');
+
+  };
+  $scope.likeItem = function(noticeId) {
+    //alert("here");
+    var noticeId = noticeId;
+    var profileData = JSON.parse($.jStorage.get('profileData'));
+    //var user_id=809;
+    var user_id = profileData["user_id"];
+
+    //var user_id = profileData["user_id"];
+    var fd = new FormData();
+    fd.append('userId', user_id);
+    fd.append('noticeId', noticeId);
+
+    var locationOrigin = "http://collegeboard-env2.elasticbeanstalk.com";
+    $http.post(locationOrigin + "/likes/saveLike", fd, {
+      transformRequest: angular.identity,
+      headers: {
+        'Content-Type': undefined
+      }
+    }).success(function(response) {
+      //alert("here1");
+      //issuccess not comming in response
+      var isSuccess = response.success;
+      if (isSuccess) {
+        //alert("liked");
+
+      } else {
+
+
+      }
+    }).error(function(response) {
+      //alert("here2");
+
+    });
+
+  };
+  var getUrl = "http://collegeboard-env2.elasticbeanstalk.com/noticeInfo/fetchNoticesForUser?userId=" + user_id;
+  if (mainCategory.toLowerCase() == "notices") {
+
+    getUrl = "http://collegeboard-env2.elasticbeanstalk.com/noticeInfo/fetchNoticesForUser?userId=" + user_id;
+
+  }
+  if ($rootScope.categoryId && $rootScope.categoryName) {
+    if ($rootScope.pageNumberHistory == "4") {
+      $rootScope.pageNumberHistory = "1";
+
+    }
+    var profileData = JSON.parse($.jStorage.get('profileData'));
+    var user_id = profileData["user_id"];
+    if ($rootScope.categoryId != categoryId) {
+      getUrl = "http://collegeboard-env2.elasticbeanstalk.com/noticeInfo/getNotices?userId=" + user_id + "&categoriesToFetch=" + $rootScope.categoryId;
+    }
+  } else {
+    $rootScope.categoryId = categoryId;
+    $rootScope.categoryName = categoryName;
+  }
+  $http({
+    method: 'GET',
+    url: getUrl,
+    async: false
+  }).
+  success(function(response, status, headers, config) {
+
+
+    //new
+    $.unblockUI();
+    var isSuccess = response.success;
+    if (isSuccess) {
+      //var register_name = response.data.userName;
+
+
+      var responseData = response.data;
+      var feed = {};
+      var entries = {};
+      var count = 0;
+      var entryValueObj = {};
+
+      if (mainCategory.toLowerCase() == "notices") {
+
+        $.each(responseData, function(key, value) {
+
+
+          var hasUserLiked = false;
+          for (var i = 0, iLen = value.likeInfoList.length; i < iLen; i++) {
+            //alert(value.likeInfoList[i].userId);
+            if (value.likeInfoList[i].userId == user_id) {
+              //alert();
+              hasUserLiked = true;
+              break;
+            }
+
+          }
+
+          var publishedFullDate = new Date(value.creationDate);
+          var publishedDate = publishedFullDate.toDateString();
+          entryValueObj = {
+            "id": value.noticeId,
+            "title": value.noticeHeading,
+            "images": {
+              "url1": value.noticeImageId
+            },
+            "publishedDate": value.creationDate,
+            "content": value.noticeDescription,
+            "urlLink": value.noticeUrl,
+            "hasUserLiked": hasUserLiked,
+            "likeCount": value.likeInfoList.length,
+            "commentCount": value.commentInfoList.length,
+            "commentData": value.commentInfoList,
+            "socialLink": value.noticeFBUrl,
+            "postedById": value.userInfo.userId,
+            "postedByRoll": value.userInfo.rollNumber,
+            "postedByName": value.userInfo.userName,
+            "seenCount": value.seenCount,
+            //"contentSnippet": "Click to read"
+            "contentSnippet": publishedDate
+          };
+          entries[count++] = entryValueObj;
+
+
+        });
+      }
+      feed = {
+        "entries": entries
+      };
+
+
+      $scope.title = categoryName;
+      $scope.description = categoryDescription;
+      $scope.feeds = feed.entries;
+      var feedEntriesData = feed.entries;
+      var feedEntriesDataJson = JSON.stringify(feedEntriesData);
+      $.jStorage.set("feedEntriesData" + mainCategory + $rootScope.categoryId + $rootScope.categoryName, feedEntriesDataJson);
+      var array = $.map(feedEntriesData, function(value, index) {
+        return [value];
+      });
+
+      $scope.feeds = array;
+      feedEntriesData = array;
+      if (feedEntriesData.length == 0) {
+        navigator.notification.alert("Sorry ,no new notices available in this category", null, 'Oops', 'OK');
+      };
+      //console.log(array);
+      $scope.msg = "";
+      executeOnSucess(feedEntriesData);
+    } else {
+      $.unblockUI();
+      $scope.title = categoryName;
+      $scope.description = categoryDescription;
+
+      if ($.jStorage.get("feedEntriesData" + mainCategory + categoryId + categoryName)) {
+
+        navigator.notification.alert("Sorry,no new notices available right now...", null, 'Error', 'Ok');
+        var feedEntriesData = JSON.parse($.jStorage.get("feedEntriesData" + mainCategory + categoryId + categoryName));
+        feedEntriesData = $.map(feedEntriesData, function(value, index) {
+          return [value];
+        });
+        $scope.feeds = feedEntriesData;
+        $scope.msg = "";
+        executeOnSucess(feedEntriesData);
+
+      } else {
+        $.unblockUI();
+        var errorMessage = response.message;
+        //showAlertMessage("Sorry,no new notices available right now...");
+        navigator.notification.alert("Sorry,no new notices available right now...", null, 'Error', 'Ok');
+        $scope.msg = "";
+      }
+    }
+
+  }).
+  error(function(data, status, headers, config) {
+    $.unblockUI();
+    if ($.jStorage.get("feedEntriesData" + mainCategory + categoryId + categoryName)) {
+      //var errorMessage=response.message;
+      $scope.title = categoryName;
+      $scope.description = categoryDescription;
+
+      //showAlertMessage("No internet connection available.");
+      navigator.notification.alert("No internet connection available.", null, 'Error', 'Ok');
+      var feedEntriesData = JSON.parse($.jStorage.get("feedEntriesData" + mainCategory + categoryId + categoryName));
+      //array formed for to limit to work
+      //$scope.feeds=feedEntriesData;
+      feedEntriesData = $.map(feedEntriesData, function(value, index) {
+        return [value];
+      });
+      $scope.feeds = feedEntriesData;
+      $scope.msg = "";
+      executeOnSucess(feedEntriesData);
+
+    } else {
+      //var errorMessage=response.message;
+      $scope.title = categoryName;
+      $scope.description = categoryDescription;
+
+      //$scope.msg = 'An error occured:' + status;
+      $scope.msg = 'No notices to fetch in this category';
+    }
+
+  });
+
+  //pagination and clicking executeonsucess
+  function executeOnSucess(feedEntriesData) {
+
+    //alert(Object.keys(feedEntriesData).length);
+    var page = 1;
+    // Define the number of the feed results in the page
+    var pageSize = 15;
+    $scope.paginationLimit = function() {
+      return pageSize * page;
+    };
+    $scope.hasMoreItems = function() {
+      return page < (Object.keys(feedEntriesData).length / pageSize);
+    };
+
+    $scope.showMoreItems = function() {
+      page = page + 1;
+    };
+
+    $scope.showDetail = function(index) {
+      //    alert(index);
+      var selectedItem = feedEntriesData[index];
+      //$scope.item = $rootScope.selectedItem;
+      //decoupling the selected item
+      $rootScope.mainCategory = "notices";
+      // alert(selectedItem.title);
+      $rootScope.title = selectedItem.title;
+      $rootScope.publishedFullDate = new Date(selectedItem.publishedDate);
+      $rootScope.publishedDate = $rootScope.publishedFullDate.toDateString();
+      //$scope.item.publishedDate = FeedPluginData.selectedItem.publishedDate;
+      $rootScope.content = selectedItem.content;
+      $rootScope.image = selectedItem.images.url1;
+      $rootScope.urlLink = selectedItem.urlLink;
+      $rootScope.hasUserLiked = selectedItem.hasUserLiked;
+      $rootScope.likeCount = selectedItem.likeCount;
+      $rootScope.commentCount = selectedItem.commentCount;
+      $rootScope.commentData = selectedItem.commentData;
+      $rootScope.socialLink = selectedItem.socialLink;
+      $rootScope.postedByName = selectedItem.postedByName;
+      $rootScope.postedById = selectedItem.postedById;
+      $rootScope.postedByRoll = selectedItem.postedByRoll;
+      $rootScope.noticeId = selectedItem.id;
+      $location.path('/app/theLoop/theLoopPage2');
+    }
+
+
+  }
+  $scope.commentClickShowDetail = function(index) {
+    //    alert(index);
+    var selectedItem = feedEntriesData[index];
+    //$scope.item = $rootScope.selectedItem;
+    //decoupling the selected item
+    $rootScope.mainCategory = "notices";
+    // alert(selectedItem.title);
+    $rootScope.title = selectedItem.title;
+    $rootScope.publishedFullDate = new Date(selectedItem.publishedDate);
+    $rootScope.publishedDate = $rootScope.publishedFullDate.toDateString();
+    //$scope.item.publishedDate = FeedPluginData.selectedItem.publishedDate;
+    $rootScope.commentIconClicked = true;
+    $rootScope.content = selectedItem.content;
+    $rootScope.image = selectedItem.images.url1;
+    $rootScope.urlLink = selectedItem.urlLink;
+    $rootScope.hasUserLiked = selectedItem.hasUserLiked;
+    $rootScope.likeCount = selectedItem.likeCount;
+    $rootScope.commentCount = selectedItem.commentCount;
+    $rootScope.commentData = selectedItem.commentData;
+    $rootScope.socialLink = selectedItem.socialLink;
+    $rootScope.postedByName = selectedItem.postedByName;
+    $rootScope.postedById = selectedItem.postedById;
+    $rootScope.postedByRoll = selectedItem.postedByRoll;
+    $rootScope.noticeId = selectedItem.id;
+    $location.path('/app/theLoop/theLoopPage2');
+  }
+
+
+
+  $scope.dateToHours = function(publishedDate) {
+
+    var d = new Date(publishedDate);
+    var today = new Date();
+    var timeStart = d.getTime();
+    var timeEnd = today.getTime();
+    var hourDiff = timeEnd - timeStart; //in ms
+    var secDiff = hourDiff / 1000; //in s
+    var minDiff = Math.floor(hourDiff / 60 / 1000); //in minutes
+    var hDiff = Math.floor(hourDiff / 3600 / 1000); //in hours
+    var days = Math.floor(hourDiff / 3600 / 1000 / 24);
+    if (days >= 30) {
+      return "more than month ago";
+    }
+    if (days != 0) {
+      return days + "d ago";
+    }
+    if (hDiff != 0) {
+      return hDiff + "hrs ago";
+    }
+    if (minDiff != 0) {
+      return minDiff + "min ago";
+    }
+    return "now";
+
+  };
+
+  $scope.$on("$destroy", function() {
+    $("#fixedHeaderContent").html("");
+  });
+
+}
+
+
+
+
+
+
+
+
+
+
+<style>
+  #fixedHeaderContent {
+    display: block;
+  }
+  
+  .footerGroupIcons div div {
+    -webkit-filter: grayscale(100%);
+    /* Chrome, Safari, Opera */
+    filter: grayscale(100%);
+  }
+  
+  .divHome {
+    -webkit-filter: grayscale(0%) !important;
+    /* Chrome, Safari, Opera */
+    filter: grayscale(0%) !important;
+    border-bottom: 3px solid #901d77 !important;
+    color: #901d77 !important;
+    opacity: 1 !important;
+  }
+  
+  .divHome a div.openSans {
+    color: #901d77 !important;
+  }
+  
+  .app-body {
+    background-color: #efefef;
+    background: #efefef;
+  }
+  
+  .backButtonArrow {
+    display: none;
+  }
+  
+  @import url(http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,300,400,700);
+  .openSans {
+    font-family: 'Open Sans', sans-serif;
+  }
+  
+  h3 {
+    font-size: 1em;
+    padding: 0;
+    margin: 5px 0 0 0;
+    color: #434343;
+  }
+  
+  h5 {
+    font-size: 1.3em;
+    margin: 0.5em 0 0 0;
+    font-weight: 400;
+  }
+  
+  .likeCommentBar button {
+    width: 100%;
+    border: none;
+    background: white;
+    border: none;
+  }
+  
+  .notLiked {
+    color: #8b8b8b;
+  }
+  
+  .liked {
+    color: #009cf5;
+  }
+  
+  .IOScartCSS {
+    position: absolute;
+    right: 10px;
+  }
+  
+  .container-fluid {
+    width: 100%;
+    position: fixed;
+    margin: auto;
+    background-color: #ffffff;
+    text-align: center;
+    padding: 0px;
+    /* color: white;*/
+    top: 50px;
+  }
+  
+  footer {
+    margin: auto;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+  }
+  
+  .first {
+    color: red;
+  }
+</style>
+<br>
+<br>
+<div ng-repeat="feed in feeds | limitTo: paginationLimit()" style="margin: 10px 10px 10px 10px;box-shadow: 0px 0px 4px #969696;">
+
+  <div ng-click="showDetail($index)">
+    <div style="background: white;padding: 10px 10px 0px 10px">
+      <h3>{{feed.postedByName}}</h3>
+      <span style="margin-right: 20pxfont-size: 0.75em;color: #aeaeae;" ng-bind="dateToHours(feed.publishedDate)"> </span>
+      <!--  {{feed.contentSnippet}} -->
+      <h5 style="word-wrap: break-word;font-size: 1.15em;">{{feed.title}}&nbsp...</h5>
+
+    </div>
+    <div style="background: white;padding: 10px">
+
+      <img style="width:100%;height:180px;" ng-src="http://collegeboard-env2.elasticbeanstalk.com/archive/document/{{feed.images.url1}}" onerror="this.onerror=null;this.style.display='none';" />
+
+
+    </div>
+  </div>
+  <!-- <a class=""  ng-class="{notLiked: feed.hasUserLiked == false,liked: feed.hasUserLiked == true}" ng-style="myStyle" ng-disabled="feed.hasUserLiked" ng-click="myStyle = {
+        'color' : 'red' };likeItem(feed.id);feed.hasUserLiked='true';">Like{{myStyle}}{{feed.likeCount}}</a>
+
+        <a  ng-click="go inside nothing differentas comment box floating">Comment{{feed.commentCount}}</a>
+ -->
+  <div class="likeCommentBar" style="background-color: #ffffff;padding-top:0.25em;padding-bottom: 0.35em;height: 2.2em;text-align: center;">
+    <span style="background-color: #ffffff;font-size: 1.3em;color: #8b8b8b; float: left;width: 12%;">
+                    <button ng-class="{notLiked: feed.hasUserLiked == false,liked: feed.hasUserLiked == true}" ng-style="myStyle" ng-disabled="feed.hasUserLiked" ng-click="myStyle={'color':'#009cf5'};likeItem(feed.id);feed.hasUserLiked='true';feed.likeCount=feed.likeCount+1;" style=""><i class="fa fa-thumbs-o-up "></i> </button></span>
+    <span style="background-color: #ffffff;font-size: 1.3em;color: #8b8b8b;float: left;width: 17%;height:auto;">
+                    <button class="notLiked" ng-click="commentClickShowDetail($index)"><img  style="display: inline-block;width:1.1em;height:1.1em;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoV2luZG93cykiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6RkU4QTQ2QzYzMjJDMTFFNjlFQUFDREE4NzAzMEU3RTYiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6RkU4QTQ2QzczMjJDMTFFNjlFQUFDREE4NzAzMEU3RTYiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDpGRThBNDZDNDMyMkMxMUU2OUVBQUNEQTg3MDMwRTdFNiIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDpGRThBNDZDNTMyMkMxMUU2OUVBQUNEQTg3MDMwRTdFNiIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PmN2takAAAKxSURBVHja7JnPSxVRFMfnDWMQRIQQEVQWRLSJCiKCpJACKSFIKVq8lVRuWtTCiMDQRb8Wau31D6gIJQsho0URumgTCvYDIdJIJQyyVfXe9D2978BtuHeaCd9rrm8ufHzvznyZd8+9595zzpjzfd+xueUyAzIDqtwAL5/Py+cRcBysAQWD1hWDgVhcNE0IdeXUyL0v4AEY9vCnATziDZtaGzgkBjRz8F/BuGE2HM6GEzFjldJI2wFWi9d4ivilWGTJ7D+l5/iu4mOuTYdPsFKuY3nLDEiTATkbx78sViDu2ZvG5ruWus4fx6jV2Zz3Dwa0gM3gDXgYoRNNE910CLyP0B4D28EUuB/HdVQDkrQucEXpXwbXNbpNDPdb2L8ADoJpjVaecVXpd/J3ljwOyKAuha6dNUzCCWXwDr+3aHQr+Ay1yW9sLIcBfkStEG66PL/wlw2p6orlCGSy/D2ha7fAT41W/Pid0n8NBjS673yG2rrBx7inUdI90MG0+zAYBE8Mug+gHpzhyvWBeYO2F0xwI49wwztJDEgSyHwOfDCGdj60OaPaCKnOQGZ9LlS0cNx+VtBkBmQVWWnMrm5jWLSJfxtgoxvl1HQ66OxiDlMIuZNo5hhVpw0PXAVug1pDbhT8qBsjsYvSyJFfA3YHKyGDu+uUXpTKm+nmCKsbqXusubcXtFZ4FSQRvCMGPHdK7xnPg7Ua4XqwjRXWEAuOG6E9E+TvMvujFQiOs8xix4Js9AUxuYdUYe0sQK6BPeAc+ETNAX5OKt9TEwe+gYvgKHjLa+Jqz5gyS9upZJWpDWTDYD/oZ38r98NNsI7XptIeiT+D0+Akq6aVXJ0N4AcLeStSiXtgn5wCyrWFBKVgKnKhGXCKK7LIUnOx0gZ4S/AM2ROvQN1/CcnZP7ozA6rcgF8CDABMiac9QHjogAAAAABJRU5ErkJggg=="/></button></span>
+    <span style="background-color: #ffffff;font-size: 1.1em;color: #8b8b8b;float: right;padding-right: 1.2em;">
+                    <span style="color:#8b8b8b;font-size: 0.8em;">{{feed.seenCount }} VIEWS &bull;</span>
+    <span style="color:#8b8b8b;font-size: 0.8em;">{{feed.likeCount}} LIKES &bull;</span>
+    <span style="color:#8b8b8b;font-size: 0.8em;">{{feed.commentCount}} COMMENTS</span>
+    </span>
+  </div>
+</div>
+</br>
+<a class="btn btn-primary btn-block" style="width: 80%;margin: auto" ng-show="hasMoreItems()" ng-click="showMoreItems()">Show more</a>
+</br>
+</br>
+</br>
+</br>
+
+
+
+
+function pageprocessortheLoopPage2(pagedef, $scope, $routeParams, $compile, $http, $rootScope, $sce, $window, $location) {
+  var data1 = $compile($(pagedef.datatemplate))($scope);
+  $("#appContent").append(data1);
+
+var data2 = '<div id="add-new-comment" class="row" style="border-top: 1px solid buttonface;border-bottom: 1px solid black;color: buttonface;width: 100%;height:4em;z-index: 1;background-color: white;margin:auto;padding-top:0.5em;padding-bottom:0.5em;font-size:11px;!important"><div style="margin-left:0.8em;"><input type="text" id="commentBox" class="text-input" placeholder="Write a comment..." ng-model="comment" style="width:70%;color:black;font-size: 0.6em;border:none;word-break: break-word;" ng-focus="commentBoxFocusIn();" ng-blur="commentBoxFocusOut();"><button style="background: white;border: none;width:20%;display:inline-block;border:none;height:100%;color:black;font-size:1em;" ng-click="submitComment(noticeId)"><img style="display: inline-block;width:1.3em;height:auto;float:right;margin-left:0.5em;margin-top:1em;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEEAAABACAYAAABFqxrgAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoV2luZG93cykiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6OTZERTU5NUUzNEFDMTFFNkJFRjE4MDdEMkJFMUI0RTciIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6OTZERTU5NUYzNEFDMTFFNkJFRjE4MDdEMkJFMUI0RTciPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo5NkRFNTk1QzM0QUMxMUU2QkVGMTgwN0QyQkUxQjRFNyIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo5NkRFNTk1RDM0QUMxMUU2QkVGMTgwN0QyQkUxQjRFNyIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PlLcnCoAAAPSSURBVHja5FxbTxNRED6tRSUoGEAQikLbLQvx8sf00XgXQVDxzUQTjBEiIKA+q2iIiT7oA69GXCi3eouXX2Bi1Jn02+SkaZct7OXsnkm+cGeZ73zzzcwukDBN87QQop4wTvgmNAvLskSSXh4mXCW8IJzF21oFk/AHrx8njBJeEs4QenQiIVH2vn7CTcJzwjkdyKhEgkzGDcI84UKcyUi6+Jw+wjXCAmGA0KYjCXYYhCHCIgz0iI4k2NENA2XPOE9I60iCHUcJ1wmvoYweHUmQy2QUc8ZFQiZO3aHWMAkj6CaXCFkdSZDJGIYy2Eg7dSiHapFHS32HMsnqpIRK3WQE3eSyit0kGeC1TCxqb1Ubx5MhXLMb47g9gRo6klA+gT4lXAmTjCA8wU2ZDKKbDEMp2iihPHKYL95AGXmdlFDJMwbRTYaC6CZJoW4YMM5FLGoZHUmwoxOL2gIUkteRBNkz2CueYd7o9ZKEvRFb+vKYPOfRTXJekLBO+Er4GzEysugmr2Cgfdv9RgnTNJvgyAdRfzlILQ8z2keoi0DpbBJmCWOEL26/iB++MAnVFLIbpcIE9YMYRjsI45ctIEil+EG4Q3hEWN0JCVtFhyg9qWK0itJNVwNLEd+NbpIUFFZwmc8QpgkFP0ioFKyaRqAF5ZQFMe0YetL4WJAD2hphjvCQsOw3CU6RgkKYhENQUgblZUA5+4E6nz1jkrASBgnVYg+hASSkoZw8SGKyuoAWD69ZhCqYkCUVSHCKXUjeBvvOCVF6cHxM7Pzhzy8QcUvltuf0syW8rlVVyqEL5WBgXpHLodnPcgiKhLoKxpiFMWbDNEavlVBfoUXmULsdON20xyZXS4ucLk9+pySkIdNqw1KjAsPSGk7ecVhyIiGJeq1HYrycmDjdNgnNCo7N36Wxec2tMR5Aoq04YQPJ9mJvaIjQAsVj8t1aFiibhJOEUzCsKAYnP4W6t7bbInsiSoC9IE26lb0TCb8jlnwBpz5Tze2jNizVEqtIfGYrt48jCfyrxrfh9pt+rbgqnzz3+XuidA/U1z3/n2LJ82w/gbovBHHBlGInz4mPg4jAQgUlWEh+Vri4MRo3JazA6UNLPkwSihht54KWvQokWDj1Cb/dXkVPKKLN8clvqNiL/VRCQerzSv9tlR9KsCTDW4/CPO4lCcvSSrshIhRelAO3t/uEx37N9iqT8AGyn1LN7YMggd1+DLL/JGIQqRplP41B56eIUbgxRksyvE0Rw3BSwkcp+aKIcVRSwhLhAeFJ3JOXSbDV8F4acj4LjSIFhx8Qmv7rAI7/AgwACDHVhmaD0tcAAAAASUVORK5CYII="/></button></div></div>';
+
+
+
+  var htmlView = $compile($(data2))($scope);
+  $("#fixedFooterContent").html(htmlView);
+
+
+  $scope.timestampToHours = function(timeStamp) {
+
+    var d = new Date(timeStamp);
+    var today = new Date();
+    var timeStart = d.getTime();
+    var timeEnd = today.getTime();
+    var hourDiff = timeEnd - timeStart; //in ms
+    var secDiff = hourDiff / 1000; //in s
+    var minDiff = Math.floor(hourDiff / 60 / 1000); //in minutes
+    var hDiff = Math.floor(hourDiff / 3600 / 1000); //in hours
+    var days = Math.floor(hourDiff / 3600 / 1000 / 24);
+    if (days >= 30) {
+      return "more than month ago";
+    }
+    if (days != 0) {
+      return days + "d ago";
+    }
+    if (hDiff != 0) {
+      return hDiff + "hrs ago";
+    }
+    if (minDiff != 0) {
+      return minDiff + "min ago";
+    }
+    return "now";
+
+  };
+
+  $scope.mainCategory = $rootScope.mainCategory;
+  $scope.title = $rootScope.title;
+  $scope.publishedFullDate = new Date($rootScope.publishedDate);
+  try {
+    $scope.publishedDate = $scope.timestampToHours($scope.publishedFullDate.getTime());
+  } catch (err) {
+    alert(err);
+  }
+
+  //$scope.publishedDate = $scope.publishedFullDate.toDateString();
+  $scope.content = $rootScope.content;
+  $scope.urlLink = $rootScope.urlLink;
+  $scope.image = $rootScope.image;
+  $scope.noticeId = $rootScope.noticeId;
+  $scope.socialLink = $rootScope.socialLink;
+  $scope.postedByName = $rootScope.postedByName;
+  $scope.postedById = $rootScope.postedById;
+  $scope.postedByRoll = $rootScope.postedByRoll;
+  $scope.hasUserLiked = $rootScope.hasUserLiked;
+  $scope.likeCount = $rootScope.likeCount;
+  //alert($scope.likeCount);
+  $scope.commentCount = $rootScope.commentCount;
+  $scope.commentData = $rootScope.commentData;
+
+  if ($scope.images != undefined) {}
+  if ($rootScope.mainCategory.toLowerCase() == "notices") {}
+
+
+
+
+  var locationOrigin = "http://collegeboard-env2.elasticbeanstalk.com";
+
+  $scope.checkItemPermission = function() {
+
+    return $scope.myUserId == $scope.postedById;
+
+
+  };
+
+
+  $scope.setInfoState = function(state) {
+    var confirmed = confirm("Are you sure you want to mark report item?");
+    if (!confirmed) {
+      return;
+    }
+    var fd = new FormData();
+    var setInfoStateUrl = "";
+    if ($scope.mainCategory.toLowerCase() == "notices") {
+      fd.append('noticeId', $scope.noticeId);
+      setInfoStateUrl = "/noticeInfo/changeNoticeState";
+
+    }
+    if (state.toLowerCase() == "spam") {
+      fd.append('infoState', "REPORTED_SPAM");
+      //alert("here2");
+    } else if (state.toLowerCase() == "abuse") {
+      fd.append('infoState', "REPORTED_ABUSE");
+    }
+
+
+    var locationOrigin = "http://collegeboard-env2.elasticbeanstalk.com";
+    $http.post(locationOrigin + setInfoStateUrl, fd, {
+      transformRequest: angular.identity,
+      headers: {
+        'Content-Type': undefined
+      }
+    }).success(function(response) {
+      var isSuccess = response.success;
+
+      if (isSuccess) {
+        navigator.notification.alert("This notice has been reported for review....", null, 'Error', 'Ok');
+
+      } else {
+
+        var errorMessage = response.message;
+        navigator.notification.alert("Sorry...Unable to report now.Please try later ..", null, 'Error', 'Ok');
+      }
+    }).error(function(response) {
+      navigator.notification.alert("Sorry,no internet connection available right now. Please try again later..", null, 'Error', 'Ok');
+
+    });
+
+
+  };
+
+  $scope.getTrustedResourceUrl = function(src) {
+
+    return $sce.trustAsResourceUrl(src);
+  };
+
+  $scope.loadURL = function(link) {
+    if (link.substring(0, 4).toLowerCase() != "http") {
+      link = "http://" + link;
+    }
+    window.open(link, '_blank');
+  };
+  $scope.commentBoxFocusIn = function() {
+    var boxheight = $(window).height() - 40;
+    $(".jumbotron").append("<div id='blank' style='height:" + boxheight + "px;'" + "></div>");
+    $('.jumbotron').animate({
+      scrollTop: $('#add-new-comment').offset().top - 100
+    }, 500);
+    //$('body').scrollTo('#commentBox'+($(window).height()/2));
+  };
+  $scope.commentBoxFocusOut = function() {
+    $('#blank').remove();
+  };
+
+  $scope.submitComment = function(noticeId) {
+    var comment = $scope.comment;
+    if (comment == "" || comment == null) {
+      navigator.notification.alert("Did you forget to type in Comment box? ", null, 'Error', 'Ok');
+      return;
+    }
+    var noticeId = noticeId;
+    $scope.commentCount = $scope.commentCount + 1;
+    $scope.userAddedInstantaneousComment = comment;
+    var profileData = JSON.parse($.jStorage.get('profileData'));
+    $scope.userNameAddedInstantaneousComment = profileData["register_name"];
+    $scope.comment = "";
+    var user_id = profileData["user_id"];
+    var fd = new FormData();
+    fd.append('userId', user_id);
+    fd.append('commentText', comment);
+    fd.append('noticeId', noticeId);
+
+    var locationOrigin = "http://collegeboard-env2.elasticbeanstalk.com";
+    $http.post(locationOrigin + "/comments/saveComment", fd, {
+      transformRequest: angular.identity,
+      headers: {
+        'Content-Type': undefined
+      }
+    }).success(function(response) {
+      var isSuccess = response.success;
+      if (isSuccess) {
+
+
+      } else {
+
+      }
+    }).error(function(response) {
+
+      navigator.notification.alert("Sorry,no internet connection available right now. Please try again later..", null, 'Error', 'Ok');
+      $scope.comment = comment;
+      $scope.userAddedInstantaneousComment = "";
+    });
+
+
+  };
+  $scope.likeItem = function(noticeId) {
+    var noticeId = noticeId;
+    var profileData = JSON.parse($.jStorage.get('profileData'));
+    var user_id = profileData["user_id"];
+
+    var fd = new FormData();
+    fd.append('userId', user_id);
+    fd.append('noticeId', noticeId);
+
+    var locationOrigin = "http://collegeboard-env2.elasticbeanstalk.com";
+    $http.post(locationOrigin + "/likes/saveLike", fd, {
+      transformRequest: angular.identity,
+      headers: {
+        'Content-Type': undefined
+      }
+    }).success(function(response) {
+      //alert("here1");
+      var isSuccess = response.success;
+      if (isSuccess) {
+        //alert("liked");
+
+      } else {
+
+
+      }
+    }).error(function(response) {
+      //alert("here2");
+
+    });
+
+  };
+  $scope.highlightCommentBox = function() {
+
+
+    //$scope.commentBoxFocusIn();
+    $('#commentBox').focus();
+  };
+
+  if ($rootScope.commentIconClicked) {
+    $rootScope.commentIconClicked = false;
+    $scope.highlightCommentBox();
+  };
+
+
+  $scope.$on("$destroy", function() {
+    $("#fixedFooterContent").html("");
+  });
+
+  $("input").focus(function() {
+
+    $(".footerGroupIcons").css('display', 'none !important');
+    document.getElementsByClassName("testClass")[0].style.display = "none !important";
+    $rootScope.showFooter = false;
+    $rootScope.$apply();
+  });
+
+  $("input").focusout(function() {
+
+    document.getElementsByClassName("testClass")[0].style.display = "block !important";
+  });
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+<style>
+  #fixedHeaderContent {
+    display: none;
+  }
+  
+  .footerGroupIcons div div {
+    -webkit-filter: grayscale(100%);
+    /* Chrome, Safari, Opera */
+    filter: grayscale(100%);
+  }
+  
+  .divHome {
+    -webkit-filter: grayscale(0%) !important;
+    /* Chrome, Safari, Opera */
+    filter: grayscale(0%) !important;
+    border-bottom: 3px solid #901d77 !important;
+    color: #901d77 !important;
+    opacity: 1 !important;
+  }
+  
+  .divHome a div.openSans {
+    color: #901d77 !important;
+  }
+  
+  .jumbotron {
+    font-family: 'Open Sans', arial;
+    padding: 0;
+    margin-bottom: 0px;
+    background-color: white;
+  }
+  
+  .dummyImage {
+    width: 100%;
+    min-height: 200px;
+    /*overflow: hidden;*/
+    /*position: absolute;*/
+    max-height: 200px;
+    top: 0;
+    /*z-index: 0;*/
+    margin-left: 0px;
+  }
+  
+  .jumbotron h4.page-header {
+    /*  background: rgba(255, 255, 255, 0) linear-gradient(45deg, white 92%, transparent 45%) repeat scroll 0 0;
+          background: rgba(255, 255, 255, 0)  -webkit-linear-gradient(45deg, white 92%, transparent 45%) repeat scroll 0 0;
+          background: rgba(255, 255, 255, 0)  linear-gradient(45deg, white 92%, transparent 45%) repeat scroll 0 0;
+        */
+    /*margin-top: 56%;*/
+    padding: 11px 20px 0;
+    /*position: relative;*/
+    /*z-index: 2;*/
+    font-size: 24px;
+    line-height: 28px;
+    font-weight: normal;
+    border: 0;
+  }
+  /*.jumbotron h4.page-header img {
+        z-index: -1;
+        left: 0;
+        top: 0;
+        position: absolute;
+        width: 100%;
+    }*/
+  
+  .scrollable-content {
+    background: white !important;
+  }
+  
+  .jumbotron .small {
+    padding: 0 20px;
+    font-size: 15px;
+    word-wrap: break-word;
+  }
+  
+  .jumbotron .small a {
+    display: block;
+    overflow: hidden;
+  }
+  
+  .jumbotron .small a img {
+    width: 100%;
+    height: auto;
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    z-index: 0;
+    margin-left: 0px;
+    display: none;
+  }
+  
+  .likeCommentBar button {
+    width: 100%;
+    border: none;
+    background: white;
+    border: none;
+  }
+  
+  .app-body {
+    background-color: #ffffff;
+  }
+  
+  .notLiked {
+    color: #8b8b8b;
+  }
+  
+  .liked {
+    color: #009cf5;
+  }
+  
+  .comment {
+    float: left;
+    width: 50%;
+    border-right: 1px solid;
+    height: 3em;
+  }
+  
+  textarea:focus,
+  input:focus {
+    outline: none;
+  }
+  
+  html,
+  body {
+    background-color: #ffffff;
+  }
+</style>
+<div style="background-color: #ffffff;">
+  <div class="jumbotron" style="min-height: 100%;padding-bottom:10px;">
+
+    <!-- <img class="dummyImage" ng-src={{mediaImage(feed)}}> -->
+
+    <img class="dummyImage" ng-show="image != null" ng-src="http://collegeboard-env2.elasticbeanstalk.com/archive/document/{{image}}" onerror="this.onerror=null;this.style.display='none';" />
+
+    <!-- <div style="background: white;padding-bottom: 20px;text-align: center;">
+                <span style="font-size: 1em;color: #aeaeae;float: left;width: 50%;border-right: 1px solid">
+                    <button ng-class="{notLiked: hasUserLiked == false,liked: hasUserLiked == true}" ng-style="myStyle" ng-disabled="hasUserLiked" ng-click="myStyle = {
+        'color' : 'red' };likeItem(noticeId);feed.hasUserLiked='true';likeCount=likeCount+1;" style=""><i class="fa fa-thumbs-o-up"></i> Like - {{likeCount}} </button></span>
+                <span style="font-size: 1em;color: #aeaeae;float: left;width: 50%">
+                    <button class="notLiked" ng-click="highlightCommentBox();"><i class="fa fa-comments-o"></i> Comment - {{commentCount}} </button></span>
+    </div> -->
+    <div class="likeCommentBar" style="background-color: #ffffff;padding-top:0.25em;padding-bottom: 0.35em;height: 2.2em;text-align: center;">
+    <span style="background-color: #ffffff;font-size: 0.9em;color: #8b8b8b; float: left;width: 12%;">
+                    <button ng-class="{notLiked: hasUserLiked == false,liked: hasUserLiked == true}" ng-style="myStyle" ng-disabled="hasUserLiked" ng-click="myStyle={'color':'#009cf5'};hasUserLiked='true';likeItem(noticeId);likeCount=likeCount+1;" style=""><i class="fa fa-thumbs-o-up "></i> </button></span>
+    <span style="background-color: #ffffff;font-size: 0.8em;color: #8b8b8b;float: left;width: 17%;height:auto;">
+                    <button class="notLiked" ng-click="highlightCommentBox();"><img  style="display: inline-block;width:1.25em;height:auto;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoV2luZG93cykiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6RkU4QTQ2QzYzMjJDMTFFNjlFQUFDREE4NzAzMEU3RTYiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6RkU4QTQ2QzczMjJDMTFFNjlFQUFDREE4NzAzMEU3RTYiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDpGRThBNDZDNDMyMkMxMUU2OUVBQUNEQTg3MDMwRTdFNiIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDpGRThBNDZDNTMyMkMxMUU2OUVBQUNEQTg3MDMwRTdFNiIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PmN2takAAAKxSURBVHja7JnPSxVRFMfnDWMQRIQQEVQWRLSJCiKCpJACKSFIKVq8lVRuWtTCiMDQRb8Wau31D6gIJQsho0URumgTCvYDIdJIJQyyVfXe9D2978BtuHeaCd9rrm8ufHzvznyZd8+9595zzpjzfd+xueUyAzIDqtwAL5/Py+cRcBysAQWD1hWDgVhcNE0IdeXUyL0v4AEY9vCnATziDZtaGzgkBjRz8F/BuGE2HM6GEzFjldJI2wFWi9d4ivilWGTJ7D+l5/iu4mOuTYdPsFKuY3nLDEiTATkbx78sViDu2ZvG5ruWus4fx6jV2Zz3Dwa0gM3gDXgYoRNNE910CLyP0B4D28EUuB/HdVQDkrQucEXpXwbXNbpNDPdb2L8ADoJpjVaecVXpd/J3ljwOyKAuha6dNUzCCWXwDr+3aHQr+Ay1yW9sLIcBfkStEG66PL/wlw2p6orlCGSy/D2ha7fAT41W/Pid0n8NBjS673yG2rrBx7inUdI90MG0+zAYBE8Mug+gHpzhyvWBeYO2F0xwI49wwztJDEgSyHwOfDCGdj60OaPaCKnOQGZ9LlS0cNx+VtBkBmQVWWnMrm5jWLSJfxtgoxvl1HQ66OxiDlMIuZNo5hhVpw0PXAVug1pDbhT8qBsjsYvSyJFfA3YHKyGDu+uUXpTKm+nmCKsbqXusubcXtFZ4FSQRvCMGPHdK7xnPg7Ua4XqwjRXWEAuOG6E9E+TvMvujFQiOs8xix4Js9AUxuYdUYe0sQK6BPeAc+ETNAX5OKt9TEwe+gYvgKHjLa+Jqz5gyS9upZJWpDWTDYD/oZ38r98NNsI7XptIeiT+D0+Akq6aVXJ0N4AcLeStSiXtgn5wCyrWFBKVgKnKhGXCKK7LIUnOx0gZ4S/AM2ROvQN1/CcnZP7ozA6rcgF8CDABMiac9QHjogAAAAABJRU5ErkJggg=="/></button></span>
+    <span style="font-size: 1.1em;color: #8b8b8b;float: right;padding-right: 1.2em;margin-top:-8px;">
+                    <!-- <span style="color:#8b8b8b;font-size: 0.8em;">{{feed.seenCount }} VIEWS &bull;</span> -->
+    <span style="color:#8b8b8b;font-size: 0.5em;">{{likeCount}} LIKES &bull;</span>
+    <span style="color:#8b8b8b;font-size: 0.5em;">{{commentCount}} COMMENTS</span>
+    </span>
+  </div>
+    <!-- <div class="likeCommentBar" style="background-color: #ffffff;padding-top:0.1em;padding-bottom: 0.1em;height: 1.8em;text-align: center;border-bottom:1px solid #aeaeae">
+      <span style="font-size: 0.7em;color: #8b8b8b; float: left;width: 50%;border-right: 1px dashed">
+                    <button ng-class="{notLiked: hasUserLiked == false,liked: hasUserLiked == true}" ng-style="myStyle" ng-disabled="hasUserLiked" ng-click="myStyle={'color':'#009cf5'};hasUserLiked='true';likeItem(noticeId);likeCount=likeCount+1;" style=""><i class="fa fa-thumbs-o-up fa-flip-horizontal"></i> Like - <span style="color:#8b8b8b">{{likeCount}}</span></button>
+      </span>
+      <span style="font-size: 0.7em;color: #8b8b8b;float: left;width: 50%">
+                    <button class="notLiked" ng-click="highlightCommentBox();"><i class="fa fa-comments-o"></i> Comment - <span style="color:#8b8b8b">{{commentCount}} </span></button>
+      </span>
+
+    </div> -->
+<div style="border-top:1px solid #ccc;"></div>
+    <h4 class="page-header">{{title}}
+    </h4>
+    <p class="small">Published : {{publishedDate}}</p>
+    <p class="small" align="justify" ng-show="content != 'undefined'">{{content}}</p>
+
+
+    <a class="btn btn-primary btn-block" style="width: 30%;display: inline-block;margin-left:10px;" ng-show="urlLink != 'undefined' && urlLink != '' && urlLink != null" ng-click="loadURL(urlLink)" style="">Website</a>
+
+    <a class="btn btn-primary btn-block" style="width: 30%;display: inline-block;margin:auto;margin-left:10px;" ng-show="socialLink != 'undefined' && socialLink != '' && socialLink != null" ng-click="loadURL(socialLink)">Social media</a>
+
+
+    
+    <div class="container" id="comments-container" style="padding-bottom:17%;">
+      <div class="row" style="padding-top: 2px;border-bottom:1px solid #ddd;" ng-repeat="comment in commentData">
+        <!-- <div  ng-repeat="comment in commentData" > -->
+        <!-- {{comment.userName}}{{comment.commentText}} -->
+        <div class="col-md-1 col-sm-1 col-xs-1">
+          <i class="fa fa-user" style="font-weight: bold;color:#337ab7;"></i>
+        </div>
+        <div class="col-md-10 col-sm-10 col-xs-10">
+
+
+          <div class=" " style="border:none;">
+            <div class="">
+              <header class="text-left">
+                <div class="comment-user small" style="font-weight: bold;color:#337ab7;">{{comment.userName}}</div>
+                <!-- <time class="comment-date" datetime="16-12-2014 01:05"><i class="fa fa-clock-o"></i>
+                                        Dec 16, 2014
+                                    </time> -->
+              </header>
+              <div class="comment-post">
+                
+                <p class="small">
+                  {{comment.commentText}}
+                </p>
+                <p style="font-size:0.5em;margin-left:2em;" ng-bind="timestampToHours(comment.commentDate)">
+                </p>
+              </div>
+              <!--<p class="text-right"><a href="#" class="btn btn-default btn-sm"><i
+                                        class="fa fa-reply"></i> reply</a></p>-->
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row" style="padding-top: 2px;border-bottom:1px solid #ddd;" ng-show="userAddedInstantaneousComment != undefined">
+        <div class="col-md-1 col-sm-1 col-xs-1">
+          <i class="fa fa-user" style="font-weight: bold;color:#337ab7;"></i>
+        </div>
+        <div class="col-md-10 col-sm-10 col-xs-10">
+          <div class="" style="border:none;">
+            <div class="">
+              <header class="text-left">
+                <div class="comment-user small" style="font-weight: bold;color:#337ab7;">{{userNameAddedInstantaneousComment}}</div>
+                <!-- <time class="comment-date" datetime="16-12-2014 01:05"><i class="fa fa-clock-o"></i>
+                                        Dec 16, 2014
+                                    </time> -->
+              </header>
+              <div class="comment-post">
+                
+                <p class="small">
+                  {{userAddedInstantaneousComment}}
+                </p>
+                <p style="font-size:0.5em;color:grey;margin-left:2em;">Now
+                </p>
+              </div>
+              <!--<p class="text-right"><a href="#" class="btn btn-default btn-sm"><i
+                                        class="fa fa-reply"></i> reply</a></p>-->
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+      <!--  <div>
+            {{userNameAddedInstantaneousComment}}
+            {{userAddedInstantaneousComment}}
+        </div> -->
+      <!-- <div id="add-new-comment" class="row"
+                     style="position: fixed;bottom : 2em;border-top: 1px solid buttonface;border-bottom: 1px solid buttonface;
+                     color: buttonface;width: 100%;z-index: 1;;background-color: white;">
+                    
+                    <input type="text" id="commentBox" class="text-input" placeholder="Comment" ng-model="comment"
+               style="width:70%;color:black;font-size: 0.6em;">
+               <button  style="width:20%;display:inline-block;border:none;height:100%;color:black;font-size:0.6em;" ng-click="submitComment(noticeId)" >
+            Post
+            </button>
+                </div> -->
+    </div>
+
+    <!-- <div  ng-repeat="comment in commentData" >
+            {{comment.userName}}{{comment.commentText}}
+        </div>
+
+        <div>
+            {{userNameAddedInstantaneousComment}}
+            {{userAddedInstantaneousComment}}
+        </div>
+
+        
+        <input type="text" id="commentBox" class="text-input" placeholder="Comment" ng-model="comment"
+               style="width:100%;">
+               <button modifier="large" ng-click="submitComment(noticeId)" >
+            Post
+        </button> -->
+
+  </div>
+</div>
+</br>
+</br>
+</br></br>
+
+
+
+
+
+
+
+
+function pageprocessortheLoopPage3(pagedef, $scope, $routeParams, $compile, $http, $rootScope, $sce, $window, $location) {var data1 = $compile($(pagedef.datatemplate))($scope);$("#appContent").append(data1);
+
+
+
+$scope.enterLink = function () {
+        var link = prompt("Enter Link below: ", "");
+    
+        if (link != null) {
+            document.getElementById("enteredLink").innerHTML = "Website : <a onclick=\"window.open('"+link+"', '_blank');\">"+link+"</a>" ;
+            $rootScope.enteredLink = link;
+        }
+
+
+
+        };
+$scope.enterSocialLink = function () {
+        var link = prompt("Enter Social Network Link below: ", "");
+    
+        if (link != null) {
+            document.getElementById("enteredSocialLink").innerHTML = "Social Link : <a onclick=\"window.open('"+link+"', '_blank');\">"+link+"</a>" ;
+            $rootScope.enteredSocialLink = link;
+        }
+
+
+
+        };
+        
+
+        var profileData = JSON.parse($.jStorage.get('profileData'));
+        var interestedCategories = profileData.interestedCategories;
+
+        if (!profileData.special_user) {
+
+            var commonCategories = ["Internship", "Placement", "Fest", "Sharing Goods", "MBA", "Masters", "First Year",
+                "Second Year", "Third Year", "Fourth Year", "Hostel", "Alumni", "Music", "Sports", "Food", "Travel", "Events",
+                "Technology", "Marketing", "Competitions", "Entrepreneurship", "Deals", "Others"];
+
+            interestedCategories = interestedCategories.filter(function (el) {
+                return commonCategories.indexOf(el.categoryName) > -1;
+            });
+        }
+
+        var deviceType = (navigator.userAgent.match(/iPad/i)) == "iPad" ? "iPad" :
+            (navigator.userAgent.match(/iPhone/i)) == "iPhone" ? "iPhone" :
+                (navigator.userAgent.match(/Android/i)) == "Android" ? "Android" :
+                    (navigator.userAgent.match(/BlackBerry/i)) == "BlackBerry" ? "BlackBerry" : "null";
+        //interestedCategories=interestedCategories.sort();            
+        $scope.allCategories = interestedCategories;
+        $scope.disableButton = false;
+        $scope.postNoticeButtonText = "Post ";
+        $scope.deviceType = deviceType;
+        $scope.capturePhotoEdit = function () {
+            navigator.camera.getPicture($scope.onPhotoDataSuccess, $scope.onFail, {
+                quality: 20, allowEdit: true,
+                destinationType: destinationType.DATA_URL
+            });
+        };
+        $scope.onFail = function (message) {
+            navigator.notification.alert('Unable to upload image. Reason :  ',null,'Error','Ok');
+        };
+        $scope.onPhotoDataSuccess = function (imageData) {
+            imageData = "data:image/jpeg;base64," + imageData;
+
+            $scope.imageBlob = $scope.dataURItoBlob(imageData);
+
+            var uploadPreview = document.getElementById('uploadPreview');
+
+            uploadPreview.src = imageData;
+        };
+        $scope.dataURItoBlob = function (dataURI) {
+            var byteString;
+            if (dataURI.split(',')[0].indexOf('base64') >= 0)
+                byteString = atob(dataURI.split(',')[1]);
+            else
+                byteString = unescape(dataURI.split(',')[1]);
+
+            var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+            var ia = new Uint8Array(byteString.length);
+            for (var i = 0; i < byteString.length; i++) {
+                ia[i] = byteString.charCodeAt(i);
+
+            }
+
+            return new Blob([ia], {type: mimeString});
+        };
+
+        $scope.loadImageFile = function () {
+
+            var oFReader = new FileReader(), rFilter = /^(?:image\/bmp|image\/cis\-cod|image\/gif|image\/ief|image\/jpeg|image\/jpeg|image\/jpeg|image\/pipeg|image\/png|image\/svg\+xml|image\/tiff|image\/x\-cmu\-raster|image\/x\-cmx|image\/x\-icon|image\/x\-portable\-anymap|image\/x\-portable\-bitmap|image\/x\-portable\-graymap|image\/x\-portable\-pixmap|image\/x\-rgb|image\/x\-xbitmap|image\/x\-xpixmap|image\/x\-xwindowdump)$/i;
+
+            oFReader.onload = function (oFREvent) {
+
+                var img = new Image();
+                img.onload = function () {
+                    var canvas = document.createElement("canvas");
+                    var ctx = canvas.getContext("2d");
+                    canvas.width = 399;
+                    canvas.height = 300;
+                    ctx.drawImage(img, 0, 0, img.width, img.height, 0, 0, canvas.width, canvas.height);
+                    document.getElementById("uploadPreview").src = canvas.toDataURL();
+                    var imageData = canvas.toDataURL();
+                    $scope.imageBlob = $scope.dataURItoBlob(imageData);
+                };
+                img.src = oFREvent.target.result;
+            };
+
+            if (document.getElementById("uploadImage").files.length === 0) {
+                return;
+            }
+            var oFile = document.getElementById("uploadImage").files[0];
+            oFReader.readAsDataURL(oFile);
+
+        };
+        $scope.submitForm = function () {
+            $scope.postNoticeButtonText = "Wait ...";
+            $scope.disableButton = true;
+            var heading = $scope.subject;
+            var description = $scope.message;
+            var fbUrl = $scope.fbUrl;
+            var url = $scope.url;
+            if ($rootScope.enteredLink != undefined &&  $rootScope.enteredLink != "") {var url = $rootScope.enteredLink;};
+            if ($rootScope.enteredSocialLink != undefined && $rootScope.enteredSocialLink != "") {var fbUrl = $rootScope.enteredSocialLink;};            
+            var imageBlob = $scope.imageBlob;
+            var categories = $scope.isSelected;
+            if (heading == undefined || heading == '') {
+                navigator.notification.alert("Please provide subject for the notice..",null,'Error','Ok');
+                $scope.postNoticeButtonText = "Post";
+                $scope.disableButton = false;
+                return false;
+            }
+            if (categories == undefined || categories == '') {
+                navigator.notification.alert("Please select a category for the notice..",null,'Error','Ok');
+                $scope.postNoticeButtonText = "Post";
+                $scope.disableButton = false;
+                return false;
+            }
+            var profileData = JSON.parse($.jStorage.get('profileData'));
+            var user_id = profileData["user_id"];
+            var fd = new FormData();
+            fd.append('userId', user_id);
+            fd.append('noticeHeading', heading);
+            fd.append('noticeDescription', description);
+            fd.append('categories', categories);
+            fd.append('noticeUrl', url);
+            fd.append('noticeFBUrl', fbUrl);
+            fd.append('noticeImageFile', imageBlob);
+
+            var locationOrigin = "http://collegeboard-env2.elasticbeanstalk.com";
+            $http.post(locationOrigin + "/noticeInfo/postNotice", fd, {
+                transformRequest: angular.identity,
+                headers: {
+                    'Content-Type': undefined
+                }
+            }).success(function (response) {
+                var isSuccess = response.success;
+                if (isSuccess) {
+
+                    $scope.disableButton = false;
+                    $scope.postNoticeButtonText = "Post ";
+                    $scope.subject = '';
+                    $scope.message = '';
+                    $scope.cat1 = '';
+                    $scope.url = '';
+                    $scope.fbUrl = '';
+                    $scope.imageBlob = '';
+                    $scope.isSelected = '';
+                    
+                    document.getElementById("enteredSocialLink").innerHTML = '';
+                    document.getElementById("enteredLink").innerHTML = '';
+                    document.getElementById("uploadPreview").src = '';
+
+                    navigator.notification.alert("Your notice has been successfully posted",null,'Success','Ok');
+                    
+                    
+                } else {
+
+                    var errorMessage = response.message;
+                    navigator.notification.alert("Sorry.Unable to post notice currently.Please try later.Reason :",null,'Error','Ok');
+                    $scope.disableButton = false;
+                    $scope.postNoticeButtonText = "Post ";
+                }
+            }).error(function (response) {
+                navigator.notification.alert("Sorry,no internet connection available right now. Please try again later..",null,'Error','Ok');
+                $scope.disableButton = false;
+                $scope.postNoticeButtonText = "Post ";
+            });
+
+
+        };
+
+}
+
+
+
+
+
+<style>
+  #fixedHeaderContent {
+    display: none;
+  }
+  
+  .footerGroupIcons div div {
+    -webkit-filter: grayscale(100%);
+    /* Chrome, Safari, Opera */
+    filter: grayscale(100%);
+  }
+  
+  .divHome {
+    -webkit-filter: grayscale(0%) !important;
+    /* Chrome, Safari, Opera */
+    filter: grayscale(0%) !important;
+    border-bottom: 3px solid #901d77 !important;
+    color: #901d77 !important;
+    opacity: 1 !important;
+  }
+  
+  .divHome a div.openSans {
+    color: #901d77 !important;
+  }
+  
+  .openSans {
+    font-family: 'Open Sans', sans-serif;
+  }
+  
+  h3 {
+    font-size: 1em;
+    padding: 0;
+    margin: 5px 0 0 0;
+    font-weight: 300;
+    color: #434343;
+  }
+  
+   .post-icons{
+    font-size: 0.75em;
+    color: #aeaeae;
+  }
+  
+  h5 {
+    font-size: 1.3em;
+    margin: 0.5em 0 0 0;
+    font-weight: 400;
+  }
+  
+  .image-upload > input {
+    display: none;
+  }
+  
+  .app-body {
+    background-color: #ffffff;
+  }
+  
+  textarea:focus,
+  input:focus {
+    outline: none;
+  }
+</style>
+<div>
+  <select ng-model="isSelected" class="form-control" style="background:white;color:#AFACAC;">
+    <option value="">Select category *</option>
+    <option ng-repeat="category in allCategories" value="{{category.categoryId}}">
+      {{category.categoryName}}
+    </option>
+  </select>
+  <input type="text" class="text-input" placeholder="Subject *" ng-model="subject" style="width:100%; height:2.5em;padding-left: 1em;border-style: none;border-radius:0px;border-top:1px solid #D4C8C8;background:white;">
+
+  <textarea class="textarea" rows="12" placeholder="Description" ng-model="message" style="width:100%; margin-bottom:10px;padding-left: 1em;border-style: none;border-radius:0px;border-top:1px solid #D4C8C8;"></textarea>
+
+  <p id="enteredLink" style="margin-left:1.0em;"></p>
+  <p id="enteredSocialLink" style="margin-left:1.0em;"></p>
+  <img id="uploadPreview" src="" />
+  <div style="background:white;width:100%;position:absolute;bottom:12%;padding:0.1em">
+    <span class="post-icons" style="font-size: 2em;margin-left:0.5em;color:grey;padding:0.1em" ng-click="enterLink()"><i class="fa fa-link"></i>
+</span>
+    <span class="post-icons" style="font-size: 2em;margin-left:0.5em;color:grey;padding:0.1em" ng-click="enterSocialLink()"><i class="fa fa-facebook"></i></span>
+
+    <div class="image-upload" style="display: inline-block;margin-left:1.5em;">
+      <label for="uploadImage">
+        <span class="post-icons" style="font-size: 2em;color:grey;"><i class="fa fa-camera"></i></span>
+
+      </label>
+
+      <input id="uploadImage" type="file" onchange="angular.element(this).scope().loadImageFile()" />
+    </div>
+    <button class="btn btn-primary btn-block" style="width: 30%;display: inline-block;float:right;margin-right:1em;" ng-click="submitForm()" ng-attr-disabled="{{disableButton}}">
+      {{postNoticeButtonText}}
+    </button>
+  </div>
+</div>
+
+
+
+
+
+function pageprocessortheLoopPage4(pagedef, $scope, $routeParams, $compile, $http, $rootScope, $sce, $window, $location) {var data1 = $compile($(pagedef.datatemplate))($scope);$("#appContent").append(data1);
+        $scope.mainCategory = "Notices";
+        $scope.profileData = JSON.parse($.jStorage.get('profileData'));
+        $scope.interestedCategories = $scope.profileData.interestedCategories;
+        $.each($scope.interestedCategories, function (key, value) {
+            if ($scope.mainCategory.toLowerCase() == "notices") {
+                if ($.jStorage.get('#notificationNoticesCount-' + value.categoryId)) {
+                    value.categoryNotifications = JSON.parse($.jStorage.get('#notificationNoticesCount-' + value.categoryId));
+                } else {
+                    value.categoryNotifications = 0;
+                }
+            }
+
+        });            
+            var categories = $scope.interestedCategories;
+            //alert("here");
+        categories = categories.sort(function (b, a) {
+            $.jStorage.get("#notificationTimestamp" + "Notices" + "Date-" + b.categoryId);
+            var timestampA = $.jStorage.get("#notificationTimestamp" + "Notices" + "Date-" + a.categoryId);
+            var timestampB = $.jStorage.get("#notificationTimestamp" + "Notices" + "Date-" + b.categoryId);
+        
+            return timestampA - timestampB;
+        });
+        $scope.items = categories;    
+
+        $scope.showGeneralCategoryFeed = function () {
+
+
+            $rootScope.categoryName = $rootScope.generalCategoryName;
+            $rootScope.categoryId= $rootScope.generalCategoryId;
+            $rootScope.pageNumberHistory="4";
+            $location.path('/app/theLoop/theLoop');
+        }
+
+        $scope.showCategoryFeed = function (index) {
+
+            var selectedItem = $scope.items[index];
+            $rootScope.categoryName = selectedItem.categoryName;
+            $rootScope.categoryId= selectedItem.categoryId;
+            $rootScope.pageNumberHistory="4";
+            $location.path('/app/theLoop/theLoop');
+        }
+
+
+}
+
+
+
+
+
+<style>
+  #fixedHeaderContent {
+    display: none;
+  }
+  
+  .footerGroupIcons div div {
+    -webkit-filter: grayscale(100%);
+    /* Chrome, Safari, Opera */
+    filter: grayscale(100%);
+  }
+  
+  .divHome {
+    -webkit-filter: grayscale(0%) !important;
+    /* Chrome, Safari, Opera */
+    filter: grayscale(0%) !important;
+    border-bottom: 3px solid #901d77 !important;
+    color: #901d77 !important;
+    opacity: 1 !important;
+  }
+  
+  .divHome a div.openSans {
+    color: #901d77 !important;
+  }
+  
+  h3 {
+    font-size: 1em;
+    padding: 0;
+    margin: 5px 0 0 0;
+    font-weight: 300;
+    color: #434343;
+  }
+  
+  span {
+    font-size: 0.95em;
+    color: #aeaeae;
+  }
+  
+  h5 {
+    font-size: 1.3em;
+    margin: 0.5em 0 0 0;
+    font-weight: 400;
+  }
+  
+  .notLiked {
+    color: grey;
+  }
+  
+  .liked {
+    color: red;
+  }
+  
+  .badge {
+    padding: 0.4em 0.5em 0.4em 0.5em;
+    font-size: 0.9em;
+    /* font-weight: bold; */
+    /* white-space: nowrap; */
+    margin-right: 0.3em;
+    margin-top: 0.7em;
+    color: #ffffff;
+    background-color: #e60000;
+    -webkit-border-radius: 9px;
+    -moz-border-radius: 9px;
+    border-radius: 9px;
+  }
+  
+  .item-title {
+    font-weight: 300;
+    font-size: 1.3em;
+    display: inline-block;
+  }
+  
+  .item {
+    padding-left: 1em;
+    padding-bottom: 0.3em;
+    padding-top: 0.3em;
+    border-bottom: solid 1px gainsboro;
+    /* color: #654949; */
+    /* border: solid 1px; */
+    /*border-top: solid 1px gainsboro;*/
+  }
+  
+  .item:nth-of-type(odd) {
+    background: #f2f2f2;
+  }
+  
+  .item:nth-of-type(even) {
+    background: #e6e6e6;
+  }
+</style>
+<div>
+  <div class="item" style="border-top: solid 1px gainsboro;" ng-click="showGeneralCategoryFeed()">
+    <div>
+      <div>
+        <header>
+          <!-- <div class="notification menu-notification" id="notification{{title}}Count-{{item.categoryId}}"
+                             ng-hide="item.categoryNotifications == 0"> -->
+
+          <i style="float: right;margin-right: 0.5em;font-size: 3em;color: #c2c2a3;" class="fa fa-angle-right"></i>
+          <div class="item-title">All</div>
+          <!-- <div class="badge" style="float: right;"
+                             >1
+                        </div>  -->
+        </header>
+        <span>Browse all categories on wall</span>
+      </div>
+    </div>
+  </div>
+  <!-- <div ng-click="showGeneralCategoryFeed()">
+            General Feed
+        </div> -->
+  <div class="item" ng-repeat="item in items" ng-click="showCategoryFeed($index)">
+    <div>
+      <div>
+        <header>
+          <!-- <div class="notification menu-notification" id="notification{{title}}Count-{{item.categoryId}}"
+                             ng-hide="item.categoryNotifications == 0"> -->
+
+          <i style="float: right;margin-right: 0.5em;font-size: 3em;color: #c2c2a3;" class="fa fa-angle-right"></i>
+          <div class="item-title">{{item.categoryName}}</div>
+          <div class="badge" style="float: right;" ng-hide="item.categoryNotifications == 0">{{item.categoryNotifications}}
+          </div>
+        </header>
+        <span class="item-desc">{{item.categoryDescription}}</span>
+      </div>
+    </div>
+  </div>
+</div>
+</br>
+</br></br></br>

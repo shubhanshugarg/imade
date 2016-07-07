@@ -1,0 +1,116 @@
+<style>
+#fixedHeaderContent {
+    display: inline !important;
+  }
+  
+  .divHome {
+    border-bottom: 3px solid #901d77 !important;
+  }
+  
+  .divHome a {
+    color: #901d77 !important;
+  }
+  
+  .app-body {
+    background-color: #efefef;
+    background: #efefef;
+  }
+.backButtonArrow {
+        display: none;
+    }
+    @import url(http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,300,400,700);
+
+    .openSans {
+        font-family: 'Open Sans', sans-serif;
+    }
+    h3{
+        font-size: 1em;
+        padding: 0;
+        margin: 5px 0 0 0;
+        color: #434343;
+    }
+    
+    h5{
+        font-size: 1.3em;
+        margin: 0.5em 0 0 0;
+        font-weight: 400;
+    }
+    .likeCommentBar button{
+        width: 100%;
+border:none;
+background: white;
+    border: none;
+    }
+.notLiked{
+        
+        color: #8b8b8b;
+    }
+    .liked{
+        color : #009cf5;
+        
+    }
+    
+.IOScartCSS{
+    position:absolute;
+    right:10px;
+}
+.container-fluid {
+    width: 100%;
+    position: fixed;
+    margin: auto;
+    background-color: #ffffff;
+    text-align: center;
+    padding: 0px;
+   /* color: white;*/
+    top: 50px;
+  }
+ 
+  footer {
+    margin: auto;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+  }
+ 
+ 
+  .first {
+    color: red;
+  }
+</style>
+<div  ng-repeat="feed in feeds | limitTo: paginationLimit()"  style="margin: 10px 10px 10px 10px;box-shadow: 0px 0px 4px #969696;">
+
+    <div ng-click="showDetail($index)" >
+    <div style="background: white;padding: 10px 10px 0px 10px" >
+        <h3>{{feed.postedByName}}</h3>
+        <span style="margin-right: 20pxfont-size: 0.75em;color: #aeaeae;"ng-bind="dateToHours(feed.publishedDate)"> </span>
+       <!--  {{feed.contentSnippet}} -->
+        <h5 style="word-wrap: break-word;font-size: 1.15em;">{{feed.title}}&nbsp...</h5>
+
+    </div>
+    <div  style="background: white;padding: 10px">
+        
+        <img style="width:100%;height:180px;" ng-src="http://collegeboard-env2.elasticbeanstalk.com/archive/document/{{feed.images.url1}}" onerror="this.onerror=null;this.style.display='none';"/>
+
+
+    </div>
+</div>
+    <!-- <a class=""  ng-class="{notLiked: feed.hasUserLiked == false,liked: feed.hasUserLiked == true}" ng-style="myStyle" ng-disabled="feed.hasUserLiked" ng-click="myStyle = {
+        'color' : 'red' };likeItem(feed.id);feed.hasUserLiked='true';">Like{{myStyle}}{{feed.likeCount}}</a>
+
+        <a  ng-click="go inside nothing differentas comment box floating">Comment{{feed.commentCount}}</a>
+ -->
+    <div class="likeCommentBar" style="background-color: #ffffff;padding-top:0.25em;padding-bottom: 0.35em;height: 2.2em;text-align: center;">
+                <span style="background-color: #ffffff;font-size: 1.3em;color: #8b8b8b; float: left;width: 12%;">
+                    <button ng-class="{notLiked: feed.hasUserLiked == false,liked: feed.hasUserLiked == true}" ng-style="myStyle" ng-disabled="feed.hasUserLiked" ng-click="myStyle={'color':'#009cf5'};likeItem(feed.id);feed.hasUserLiked='true';feed.likeCount=feed.likeCount+1;" style=""><i class="fa fa-thumbs-o-up "></i> </button></span>
+                <span style="background-color: #ffffff;font-size: 1.3em;color: #8b8b8b;float: left;width: 12%">
+                    <button class="notLiked" ng-click="commentClickShowDetail($index)"><img  style="display: inline-block;width:1.1em;height:1.1em;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoV2luZG93cykiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6RkU4QTQ2QzYzMjJDMTFFNjlFQUFDREE4NzAzMEU3RTYiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6RkU4QTQ2QzczMjJDMTFFNjlFQUFDREE4NzAzMEU3RTYiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDpGRThBNDZDNDMyMkMxMUU2OUVBQUNEQTg3MDMwRTdFNiIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDpGRThBNDZDNTMyMkMxMUU2OUVBQUNEQTg3MDMwRTdFNiIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PmN2takAAAKxSURBVHja7JnPSxVRFMfnDWMQRIQQEVQWRLSJCiKCpJACKSFIKVq8lVRuWtTCiMDQRb8Wau31D6gIJQsho0URumgTCvYDIdJIJQyyVfXe9D2978BtuHeaCd9rrm8ufHzvznyZd8+9595zzpjzfd+xueUyAzIDqtwAL5/Py+cRcBysAQWD1hWDgVhcNE0IdeXUyL0v4AEY9vCnATziDZtaGzgkBjRz8F/BuGE2HM6GEzFjldJI2wFWi9d4ivilWGTJ7D+l5/iu4mOuTYdPsFKuY3nLDEiTATkbx78sViDu2ZvG5ruWus4fx6jV2Zz3Dwa0gM3gDXgYoRNNE910CLyP0B4D28EUuB/HdVQDkrQucEXpXwbXNbpNDPdb2L8ADoJpjVaecVXpd/J3ljwOyKAuha6dNUzCCWXwDr+3aHQr+Ay1yW9sLIcBfkStEG66PL/wlw2p6orlCGSy/D2ha7fAT41W/Pid0n8NBjS673yG2rrBx7inUdI90MG0+zAYBE8Mug+gHpzhyvWBeYO2F0xwI49wwztJDEgSyHwOfDCGdj60OaPaCKnOQGZ9LlS0cNx+VtBkBmQVWWnMrm5jWLSJfxtgoxvl1HQ66OxiDlMIuZNo5hhVpw0PXAVug1pDbhT8qBsjsYvSyJFfA3YHKyGDu+uUXpTKm+nmCKsbqXusubcXtFZ4FSQRvCMGPHdK7xnPg7Ua4XqwjRXWEAuOG6E9E+TvMvujFQiOs8xix4Js9AUxuYdUYe0sQK6BPeAc+ETNAX5OKt9TEwe+gYvgKHjLa+Jqz5gyS9upZJWpDWTDYD/oZ38r98NNsI7XptIeiT+D0+Akq6aVXJ0N4AcLeStSiXtgn5wCyrWFBKVgKnKhGXCKK7LIUnOx0gZ4S/AM2ROvQN1/CcnZP7ozA6rcgF8CDABMiac9QHjogAAAAABJRU5ErkJggg=="/></button></span>
+                <span style="background-color: #ffffff;font-size: 1.1em;color: #8b8b8b;float: right;padding-right: 1.2em;">
+                    <span style="color:#8b8b8b;font-size: 0.8em;">{{feed.seenCount }} VIEWS &bull;</span>
+                    <span style="color:#8b8b8b;font-size: 0.8em;">{{feed.likeCount}} LIKES &bull;</span>
+                    <span style="color:#8b8b8b;font-size: 0.8em;">{{feed.commentCount}} COMMENTS</span>
+                    </span>
+    </div>
+</div>
+    </br>
+    <a class="btn btn-primary btn-block" style="width: 80%;margin: auto" ng-show="hasMoreItems()" ng-click="showMoreItems()">Show more</a>
+</br></br></br>

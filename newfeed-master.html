@@ -1,0 +1,132 @@
+<style>
+    @import url(http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,300,400,700);
+
+    .openSans {
+        font-family: 'Open Sans', sans-serif;
+    }
+
+    .expireTime {
+        color: #cc0000;
+    }
+
+    /*==================================================
+    * Effect 7
+    * ===============================================*/
+    .effect7 {
+        position: relative;
+        -webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+        -moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+    }
+
+    .effect7:before, .effect7:after {
+        content: "";
+        position: absolute;
+        z-index: -1;
+        -webkit-box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+        -moz-box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+        top: 0;
+        bottom: 0;
+        left: 10px;
+        right: 10px;
+        -moz-border-radius: 100px / 10px;
+        border-radius: 100px / 10px;
+    }
+
+    .effect7:after {
+        right: 10px;
+        left: auto;
+        -webkit-transform: skew(8deg) rotate(3deg);
+        -moz-transform: skew(8deg) rotate(3deg);
+        -ms-transform: skew(8deg) rotate(3deg);
+        -o-transform: skew(8deg) rotate(3deg);
+        transform: skew(8deg) rotate(3deg);
+    }
+
+    .titleGradient {
+        position: absolute;
+        max-height: 66px;
+        line-height: 18px;
+        overflow: hidden;
+        top: 0px;
+        left: 0px;
+        padding: 10px;
+        color: #fff;
+        width: 96.6%;
+        margin-left: 5px;
+        margin-top: 5px;
+        opacity: 1;
+        font-size: 16px;
+        background: -moz-linear-gradient(top, rgba(37, 37, 37, 1) 0%, rgba(37, 37, 37, 0.95) 6%, rgba(24, 24, 24, 0.15) 100%);
+        background: -webkit-linear-gradient(top, rgba(37, 37, 37, 1) 0%, rgba(37, 37, 37, 0.95) 6%, rgba(24, 24, 24, 0.15) 100%);
+        background: -o-linear-gradient(top, rgba(37, 37, 37, 1) 0%, rgba(37, 37, 37, 0.95) 6%, rgba(24, 24, 24, 0.15) 100%);
+        background: -ms-linear-gradient(top, rgba(37, 37, 37, 1) 0%, rgba(37, 37, 37, 0.95) 6%, rgba(24, 24, 24, 0.15) 100%);
+        background: linear-gradient(to bottom, rgba(37, 37, 37, 1) 0%, rgba(37, 37, 37, 0.95) 6%, rgba(24, 24, 24, 0.15) 100%);
+    }
+
+    .selectedBackGround {
+        border-width: 3px;
+        border-bottom-style: ridge;
+        border-bottom-color: red;
+        background: #252525;
+
+    }
+
+    .unselectedBackGround {
+        background: #4b4b4b;
+        border-width: 3px;
+        border-bottom-style: ridge;
+        border-bottom-color: #4b4b4b;
+
+    }
+
+    .bottomGradient {
+        background: -moz-linear-gradient(top, rgba(24, 24, 24, 0.15) 0%, rgba(37, 37, 37, 0.95) 94%, rgba(37, 37, 37, 1) 100%);
+        background: -webkit-linear-gradient(top, rgba(24, 24, 24, 0.15) 0%, rgba(37, 37, 37, 0.95) 94%, rgba(37, 37, 37, 1) 100%);
+        background: -o-linear-gradient(top, rgba(24, 24, 24, 0.15) 0%, rgba(37, 37, 37, 0.95) 94%, rgba(37, 37, 37, 1) 100%);
+        background: -ms-linear-gradient(top, rgba(24, 24, 24, 0.15) 0%, rgba(37, 37, 37, 0.95) 94%, rgba(37, 37, 37, 1) 100%);
+        background: linear-gradient(to bottom, rgba(24, 24, 24, 0.15) 0%, rgba(37, 37, 37, 0.95) 94%, rgba(37, 37, 37, 1) 100%);
+    }
+
+    body {
+        background: #EBEBEB;
+
+    }
+
+    .backButtonArrow {
+        display: none;
+    }
+</style>
+    
+<!-- View Code-->
+
+<div class="list-group" >
+        <div class="list-group-item" style="padding:5px;"><img style='width:100%;height:180px;'
+                                                               ng-src="{{name.image}}"/>
+
+            <div class='titleGradient'>name.offer
+            </div>
+            <div style='position: absolute;bottom:0px;left:0px;padding:10px;color:#fff;width: 96.6%;margin-left: 5px;margin-bottom:5px;opacity:1;font-size: 14px'
+                 class='bottomGradient'>name.restaurantname
+            </div>
+        </div>
+        <div class="list-group-item" style="padding:5px;">
+            <div class="form-group" style="margin-bottom:0px;">
+                <div class="col-xs-3 col-md-3" style="padding:0px;text-align: left;font-size: .9em;">
+                    <i class="fa fa-map-marker" style='color:#cc0000;'></i> name.distance
+                    <div>name.location</div>
+                </div>
+                <div class="col-xs-6 col-md-6" style="padding:0px;text-align: center;font-size: .9em;">
+                    <div><b>Expires in </b><span class="expireTime" '>here</span>
+                    </div>
+                </div>
+                <div class="col-xs-3 col-md-3" style="padding: 0px;text-align: center;">
+                    <div style="border: 1px solid #468847;color: #468847;padding: 2px;line-height: 25px;border-radius: 4px;font-weight: bold;">
+                        Get Deal
+                    </div>
+                </div>
+                <div style="clear:both"></div>
+            </div>
+        </div>
+    </div>

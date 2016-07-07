@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Sensation Feed</title>
+
+    <link rel="stylesheet" href="lib/css/bootstrap.min.css">
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+    <link rel="stylesheet" href="lib/css/jquery-ui.css">
+    <!-- <link rel="stylesheet" href="styles/app.css"/> -->
+    <script src="js/jquery-1.11.1.min.js"></script>
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <script src="lib/js/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <script src="js/jstorage.js"></script>
+    <script src="js/firstCollege.js"></script>
+    <script type="text/javascript" src="lib/js/bootstrap.min.js"></script>
+    <script type='application/javascript' src='lib/js/fastclick.js'></script>
+
+    <script type="text/javascript">
+
+    </script>
+    <style>
+        .backButtonArrow {
+            display: none;
+        }
+
+        @import url(http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,300,400,700);
+
+        .openSans {
+            font-family: 'Open Sans', sans-serif;
+        }
+
+        h3 {
+            font-size: 1em;
+            padding: 0;
+            margin: 5px 0 0 0;
+            color: #434343;
+        }
+
+        h5 {
+            font-size: 1.3em;
+            margin: 0.5em 0 0 0;
+            font-weight: 400;
+        }
+
+
+    </style>
+
+    <div style="color: white;
+    background: #0099e6;
+    font-size: 2.5em;
+    position: fixed;
+    border-radius: 0.5em;
+    bottom: 0.8em;
+    right: 0.25em;
+    padding: 0.5em;
+    z-index: 5;" ng-click="showPostPage()"><i class="fa fa-pencil"></i>
+    </div>
+
+
+    <div style="display: block;
+    text-align: right;
+    margin-bottom: 0.5em;
+    margin-top: 0.5em;
+
+    font-size: 1.3em;">
+        <img style="display: inline-block;margin-right: 0.5em;"
+             src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoV2luZG93cykiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6N0UwMDg2QjZGQ0JGMTFFNThBM0FENDZFNzE3NUQ3OTUiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6N0UwMDg2QjdGQ0JGMTFFNThBM0FENDZFNzE3NUQ3OTUiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo3RTAwODZCNEZDQkYxMUU1OEEzQUQ0NkU3MTc1RDc5NSIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo3RTAwODZCNUZDQkYxMUU1OEEzQUQ0NkU3MTc1RDc5NSIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/Pozq/3EAAADbSURBVHjaYvz//z8DLQETA43B0LcAGwgA4v9k4gBQnCJjdMALxE+A2INY1yAZ5A3Vy4vPgglAvALK9iPB5T5Qw9aAzMBlgQkQfwJiCVLCE80wKSD+AjIL3QIWID4LxBlQ/hwywn8G1MAcqFksyBYUAPExIGYkNUVgiVRQyjwJMhNmgSwQ/wRiXajkaQpS0SmoI/WB+AfIbBBnAxDfAOIKctI0rqKGkZGxB0ipMEJtxgcIBdv/QV9UiOGRIypJE4q4DTgsEQfiTYT0ExMHo/XBELeAcbTSJwQAAgwA89ev0r1EHaUAAAAASUVORK5CYII="/>
+
+        <h3 style="margin-right:0.5em;float: right;clear: right;" ng-click="showLoopCategoriesPage()">Loop
+            categories</h3>
+    </div>
+    <div>
+        <div ng-repeat="feed in feeds | limitTo: paginationLimit()" ng-click="showDetail($index)"
+             style="margin: 10px 10px 10px 10px;box-shadow: 0px 0px 4px #969696;">
+            <div style="background: white;padding: 10px 10px 0px 20px">
+                <h3>{{feed.postedByName}}</h3>
+                <span style="margin-right: 20px;font-size: 0.75em;color: #aeaeae;">Posted {{feed.contentSnippet}} </span><span><img
+                    style="vertical-align: sub;"
+                    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoV2luZG93cykiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6NTE1MjZBNDlFMDkyMTFFNTgwODVERDFGQjM1NjE2NkEiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6NTE1MjZBNEFFMDkyMTFFNTgwODVERDFGQjM1NjE2NkEiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo1MTUyNkE0N0UwOTIxMUU1ODA4NUREMUZCMzU2MTY2QSIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo1MTUyNkE0OEUwOTIxMUU1ODA4NUREMUZCMzU2MTY2QSIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PuhdFFkAAAEgSURBVHja1NM/SEJRFMdxn1hLQw1iEEJSUJNCNfZnkaZocIoIXGqJwCGJrDHao2gQGnMRoQcWBC4Nlbo2CAZRGA7RVEMtDa/vld+Dh9LkEB74LO+ee+65h/ssx3F83YTf12X8f4GAbdvt32awijjGYeEFN8ij/FcHIZyhgjSCyMoAUrhHDuH2AlO4xQb6dNokMthBDJfKXcMdZt0C07jGhBJ+sIkonrX+hW18K2cUV1gwBQ4x7LnKBx6xrsQi9vGEN0/eEI5MgQNtcmMQYzjHp2ZT10y8B5lu9kyBKpbR1EI/TjTtCEZwgVMN08Q7Eii5QzRDmdOpZgZLqGFLV3nAinILmDebW+/A01IDSRzrHSxiV2uv6qrjHVi9/zP9CjAATJc+BTj1u7gAAAAASUVORK5CYII="/>&nbsp;Views:&nbsp;</span><span
+                    style="font-size: 0.75em;color: #434343">{{feed.seenCount }}</span>
+                <h5>{{feed.title}}</h5>
+
+            </div>
+            <div style="background: white;padding: 5px">
+                <img style="width:100%;height:180px;"
+                     src="https://www.planwallpaper.com/static/images/Winter-Tiger-Wild-Cat-Images.jpg"
+                     onerror="this.onerror=null;this.style.display='none';"/>
+
+
+            </div>
+            <div style="background: white;padding-bottom: 20px;text-align: center;">
+                <span style="font-size: 0.75em;color: #aeaeae;float: left;width: 50%;border-right: 1px dotted black">
+                    <i class="fa fa-thumbs-o-up"></i> Like - {{likeCount}}</span>
+                <span style="font-size: 0.75em;color: #aeaeae;float: left;width: 50%">
+                    <i class="fa fa-comments-o"></i> Comment - {{commentCount}} </span>
+            </div>
+
+        </div>
+        <a class="btn btn-primary btn-block" style="width: 80%;margin: auto" ng-show="hasMoreItems()"
+           ng-click="showMoreItems()">Show more</a>
+    </div>
+</head>
+</html>
