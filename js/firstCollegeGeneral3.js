@@ -1,7 +1,9 @@
 var app = angular.module('newApp', []);
+var numResults = 10;
 
 app.controller('FeedPluginMasterController', ["$scope", "$location", "$rootScope", "$http", function ($scope, $rootScope, $location, $http, FeedPluginData) {
 
+    $scope.offset = 0;
     //var profileData = JSON.parse($.jStorage.get('profileData'));
     //var user_id = profileData["user_id"];
     if ($rootScope.userSignedUp) {
@@ -24,7 +26,7 @@ app.controller('FeedPluginMasterController', ["$scope", "$location", "$rootScope
     $scope.msg = "Loading...";
 
 
-    $scope.feeds = "";
+    $scope.feeds = [];
     var user_id = "1294";
     var fd = new FormData();
     fd.append('userId', user_id);
@@ -57,7 +59,7 @@ app.controller('FeedPluginMasterController', ["$scope", "$location", "$rootScope
         feedEntriesData = $.map(feedEntriesData, function (value, index) {
             return [value];
         });
-        $scope.feeds = feedEntriesData;
+        $scope.feeds.push(feedEntriesData);
         executeOnSucess(feedEntriesData);
 
     }
@@ -111,12 +113,11 @@ app.controller('FeedPluginMasterController', ["$scope", "$location", "$rootScope
         });
 
     };
-    var getUrl = "http://collegeboard-env2.elasticbeanstalk.com/noticeInfo/fetchNoticesForUser?userId=" + user_id;
+    var getUrl = "http://collegeboard-env2.elasticbeanstalk.com/noticeInfo/fetchNoticesForUser?userId=" + user_id + "&numResults=" + numResults;
     if (mainCategory.toLowerCase() == "notices") {
-
-        getUrl = "http://collegeboard-env2.elasticbeanstalk.com/noticeInfo/fetchNoticesForUser?userId=" + user_id;
-
+        getUrl = "http://collegeboard-env2.elasticbeanstalk.com/noticeInfo/fetchNoticesForUser?userId=" + user_id + "&numResults=" + numResults;
     }
+
     if ($rootScope.categoryId && $rootScope.categoryName) {
         if ($rootScope.pageNumberHistory == "4") {
             $rootScope.pageNumberHistory = "1";
@@ -637,12 +638,22 @@ app.controller('FeedPluginMasterController', ["$scope", "$location", "$rootScope
         $rootScope.categoryId = categoryId;
         $rootScope.categoryName = categoryName;
     }
-    $http({
-        method: 'GET',
-        url: getUrl,
-        async: false
-    }).
-        success(function (response, status, headers, config) {
+
+    $(window).scroll(function () {
+        if ($(window).scrollTop() >= $(document).height() - $(window).height() - 10) {
+            $scope.offset = $scope.offset + numResults;
+            var url = getUrl + "&offset=" + $scope.offset;
+            populatePage(url);
+            //console.log("offset = " + $scope.offset + " , number of posts = " + $scope.feeds.length);
+        }
+    });
+
+    function populatePage(getUrl) {
+        $http({
+            method: 'GET',
+            url: getUrl,
+            async: false
+        }).success(function (response, status, headers, config) {
 
 
             //new
@@ -698,7 +709,7 @@ app.controller('FeedPluginMasterController', ["$scope", "$location", "$rootScope
                             "contentSnippet": publishedDate
                         };
                         entries[count++] = entryValueObj;
-
+                        $scope.feeds.push(entryValueObj);
 
                     });
                 }
@@ -709,7 +720,7 @@ app.controller('FeedPluginMasterController', ["$scope", "$location", "$rootScope
 
                 $scope.title = categoryName;
                 $scope.description = categoryDescription;
-                $scope.feeds = feed.entries;
+                //$scope.feeds.push(feed.entries);
                 var feedEntriesData = feed.entries;
                 var feedEntriesDataJson = JSON.stringify(feedEntriesData);
                 //$.jStorage.set("feedEntriesData" + mainCategory + $rootScope.categoryId + $rootScope.categoryName, feedEntriesDataJson);
@@ -718,12 +729,12 @@ app.controller('FeedPluginMasterController', ["$scope", "$location", "$rootScope
                     return [value];
                 });
 
-                $scope.feeds = array;
+                //$scope.feeds.push(array);
                 feedEntriesData = array;
                 if (feedEntriesData.length == 0) {
                     navigator.notification.alert("Sorry ,no new notices available in this category", null, 'Oops', 'OK');
                 }
-                ;
+
                 //console.log(array);
                 $scope.msg = "";
                 executeOnSucess(feedEntriesData);
@@ -739,7 +750,7 @@ app.controller('FeedPluginMasterController', ["$scope", "$location", "$rootScope
                     feedEntriesData = $.map(feedEntriesData, function (value, index) {
                         return [value];
                     });
-                    $scope.feeds = feedEntriesData;
+                    $scope.feeds.push(feedEntriesData);
                     $scope.msg = "";
                     executeOnSucess(feedEntriesData);
 
@@ -752,8 +763,7 @@ app.controller('FeedPluginMasterController', ["$scope", "$location", "$rootScope
                 }
             }
 
-        }).
-        error(function (data, status, headers, config) {
+        }).error(function (data, status, headers, config) {
             $.unblockUI();
             if ($.jStorage.get("feedEntriesData" + mainCategory + categoryId + categoryName)) {
                 //var errorMessage=response.message;
@@ -768,7 +778,7 @@ app.controller('FeedPluginMasterController', ["$scope", "$location", "$rootScope
                 feedEntriesData = $.map(feedEntriesData, function (value, index) {
                     return [value];
                 });
-                $scope.feeds = feedEntriesData;
+                $scope.feeds.push(feedEntriesData);
                 $scope.msg = "";
                 executeOnSucess(feedEntriesData);
 
@@ -783,6 +793,9 @@ app.controller('FeedPluginMasterController', ["$scope", "$location", "$rootScope
 
         });
 
+    }
+
+    populatePage(getUrl);
     //pagination and clicking executeonsucess
     function executeOnSucess(feedEntriesData) {
 
@@ -798,7 +811,9 @@ app.controller('FeedPluginMasterController', ["$scope", "$location", "$rootScope
         };
 
         $scope.showMoreItems = function () {
-            page = page + 1;
+            $scope.offset = $scope.offset + 4;
+            var url = getUrl + "&offset=" + $scope.offset;
+            populatePage(url);
         };
 
         $scope.showDetail = function (index) {
@@ -855,7 +870,8 @@ app.controller('FeedPluginMasterController', ["$scope", "$location", "$rootScope
         $rootScope.postedByRoll = selectedItem.postedByRoll;
         $rootScope.noticeId = selectedItem.id;
         $location.path('/app/theLoop/theLoopPage2');
-    }
+    };
+
     $scope.commentsShowDetail = function (index) {
         //    alert(index);
         var selectedItem = feedEntriesData[index];
@@ -881,8 +897,7 @@ app.controller('FeedPluginMasterController', ["$scope", "$location", "$rootScope
         $rootScope.postedByRoll = selectedItem.postedByRoll;
         $rootScope.noticeId = selectedItem.id;
         $location.path('/app/theLoop/theLoopPage2');
-    }
-
+    };
 
     $scope.dateToHours = function (publishedDate) {
 
@@ -975,7 +990,8 @@ app.controller('FeedPluginMasterController', ["$scope", "$location", "$rootScope
         }
         //alert("Hello");
 
-    }
+    };
+
     //$scope.getCount("Notices");
     $scope.updateInterestedCategories = function () {
 

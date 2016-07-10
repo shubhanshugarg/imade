@@ -5,7 +5,6 @@
     <title>Sensation Feed</title>
 
     <link rel="stylesheet" href="lib/css/bootstrap.min.css">
-    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
     <link rel="stylesheet" href="lib/css/jquery-ui.css">
     <link rel="stylesheet" href="styles/app.css"/>
     <script src="js/jquery-1.11.1.min.js"></script>
@@ -13,7 +12,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 
     <script src="lib/js/jquery-ui.min.js"></script>
-
+    <script src="lib/js/angular.min.js"></script>
     <script src="js/jstorage.js"></script>
     <script src="js/firstCollegeGeneral3.js"></script>
     <script type="text/javascript" src="lib/js/bootstrap.min.js"></script>
@@ -147,13 +146,13 @@
     <br>
     <br>
 
-    <div ng-repeat="feed in feeds | limitTo: paginationLimit()"
+    <div ng-repeat="feed in feeds"
          style="background:#fff;margin: 10px;padding:10px;box-shadow: 0px 0px 4px #969696;">
 
         <div ng-click="showDetail($index)">
             <div>
                 <h3>{{feed.postedByName}}</h3>
-                <span style="margin-right: 20pxfont-size: 0.75em;color: #aeaeae;"
+                <span style="margin-right: 20px;font-size: 0.75em;color: #aeaeae;"
                       ng-bind="dateToHours(feed.publishedDate)"> </span>
                 <!--  {{feed.contentSnippet}} -->
                 <h5 style="word-wrap: break-word;font-size: 1.15em;padding-bottom:5px;">{{feed.title}}</h5>
@@ -198,8 +197,8 @@
         </div>
     </div>
     </br>
-    <a class="btn btn-primary btn-block" style="width: 80%;margin: auto" ng-show="hasMoreItems()"
-       ng-click="showMoreItems()">Show more</a>
+    <!--<a class="btn btn-primary btn-block" style="width: 80%;margin: auto"
+       ng-click="showMoreItems()">Show more</a>-->
     </br>
     </br>
     </br>
