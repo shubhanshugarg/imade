@@ -103,6 +103,19 @@
                     <i class="fa fa-comments-o"></i> Comment - {{feed.commentCount}} </span>
         </div>
     </div>
+    <table ng-controller="StockHistoryController">
+        <thead>
+        <tr>
+            <th colspan="4">Historical Stock Quote Price</th>
+        </tr>
+        </thead>
+        <tbody when-scroll-ends="loadMoreRecords()">
+        <tr ng-repeat="stock in stockList">
+            <td>{{stock.dateValue | date:'mediumDate'}}</td>
+            <td>{{stock.price | currency:'$':2}}</td>
+        </tr>
+        </tbody>
+    </table>
     <a class="btn btn-primary btn-block" style="width: 80%;margin: auto" ng-show="hasMoreItems()"
        ng-click="showMoreItems()">Show more</a>
 </div>

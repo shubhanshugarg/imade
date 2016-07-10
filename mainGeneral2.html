@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Sensation Feed</title>
+
+    <link rel="stylesheet" href="lib/css/bootstrap.min.css">
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+    <link rel="stylesheet" href="lib/css/jquery-ui.css">
+    <link rel="stylesheet" href="styles/app.css"/>
+    <script src="js/jquery-1.11.1.min.js"></script>
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
+    <script src="lib/js/jquery-ui.min.js"></script>
+
+    <script src="js/jstorage.js"></script>
+    <script src="js/firstCollegeGeneral3.js"></script>
+    <script type="text/javascript" src="lib/js/bootstrap.min.js"></script>
+    <script type='application/javascript' src='lib/js/fastclick.js'></script>
+
+    <script type="text/javascript">
+
+    </script>
+    <style>
+        #fixedHeaderContent {
+            display: block;
+        }
+
+        .footerGroupIcons div div img {
+            -webkit-filter: grayscale(100%);
+            /* Chrome, Safari, Opera */
+            filter: grayscale(100%);
+        }
+
+        .footerGroupIcons div div a div {
+            -webkit-filter: grayscale(100%);
+            /* Chrome, Safari, Opera */
+            filter: grayscale(100%);
+        }
+
+        .divHome img {
+            -webkit-filter: grayscale(0%) !important;
+            /* Chrome, Safari, Opera */
+            filter: grayscale(0%) !important;
+            opacity: 1 !important;
+        }
+
+        .divHome {
+            -webkit-filter: grayscale(0%) !important;
+            /* Chrome, Safari, Opera */
+            filter: grayscale(0%) !important;
+            /*border-bottom: 3px solid #901d77 !important;*/
+            color: #901d77 !important;
+            opacity: 1 !important;
+        }
+
+        .divHome a div.openSans {
+            -webkit-filter: grayscale(0%) !important;
+            /* Chrome, Safari, Opera */
+            filter: grayscale(0%) !important;
+
+            color: #901d77 !important;
+        }
+
+        .app-body {
+            background-color: #efefef;
+            background: #efefef;
+        }
+
+        .backButtonArrow {
+            display: none;
+        }
+
+        @import url(http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,300,400,700);
+        .openSans {
+            font-family: 'Open Sans', sans-serif;
+        }
+
+        h3 {
+            font-size: 1em;
+            padding: 0;
+            margin: 5px 0;
+            color: #434343;
+        }
+
+        h5 {
+            font-size: 1.3em;
+            margin: 0.5em 0 0 0;
+            font-weight: 400;
+        }
+
+        .likeCommentBar button {
+            width: 100%;
+            border: none;
+            background: white;
+            border: none;
+        }
+
+        .notLiked {
+            color: #8b8b8b;
+        }
+
+        .liked {
+            color: #009cf5;
+        }
+
+        .IOScartCSS {
+            position: absolute;
+            right: 10px;
+        }
+
+        .container-fluid {
+            width: 100%;
+            position: fixed;
+            margin: auto;
+            background-color: #ffffff;
+            text-align: center;
+            padding: 0px;
+            /* color: white;*/
+            top: 50px;
+        }
+
+        footer {
+            margin: auto;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+
+        .first {
+            color: red;
+        }
+    </style>
+
+</head>
+
+<body>
+<div ng-app="newApp" ng-controller="FeedPluginMasterController">
+
+
+    <!-- <div  ng-repeat="friend in connectionSuggestionsArrayView">
+
+                {{friend.userId}}
+
+    </div> -->
+    <br>
+    <br>
+
+    <div ng-repeat="feed in feeds | limitTo: paginationLimit()"
+         style="background:#fff;margin: 10px;padding:10px;box-shadow: 0px 0px 4px #969696;">
+
+        <div ng-click="showDetail($index)">
+            <div>
+                <h3>{{feed.postedByName}}</h3>
+                <span style="margin-right: 20pxfont-size: 0.75em;color: #aeaeae;"
+                      ng-bind="dateToHours(feed.publishedDate)"> </span>
+                <!--  {{feed.contentSnippet}} -->
+                <h5 style="word-wrap: break-word;font-size: 1.15em;padding-bottom:5px;">{{feed.title}}</h5>
+                <h6 style="word-wrap: break-word;font-size: 1em;padding-bottom:5px;">{{feed.content | limitTo:120
+                    }}&nbsp...</h6>
+
+            </div>
+            <div style="max-height: 300px;overflow:hidden;">
+
+                <img style="width:100%;height:auto;"
+                     ng-src="http://collegeboard-env2.elasticbeanstalk.com/archive/document/{{feed.images.url1}}"
+                     onerror="this.onerror=null;this.style.display='none';"/>
+
+
+            </div>
+        </div>
+        <!-- <a class=""  ng-class="{notLiked: feed.hasUserLiked == false,liked: feed.hasUserLiked == true}" ng-style="myStyle" ng-disabled="feed.hasUserLiked" ng-click="myStyle = {
+              'color' : 'red' };likeItem(feed.id);feed.hasUserLiked='true';">Like{{myStyle}}{{feed.likeCount}}</a>
+
+              <a  ng-click="go inside nothing differentas comment box floating">Comment{{feed.commentCount}}</a>
+       -->
+        <div class="likeCommentBar" style="padding-top:0.5em;padding-bottom: 0em;padding-left:0px;">
+
+    <span style="background-color: #ffffff;font-size: 1.3em;color: #8b8b8b; float: left;width: 12%;text-align:left;">
+                    <button ng-class="{notLiked: feed.hasUserLiked == false,liked: feed.hasUserLiked == true}"
+                            ng-style="myStyle" ng-disabled="feed.hasUserLiked"
+                            ng-click="myStyle={'color':'#009cf5'};likeItem(feed.id);feed.hasUserLiked='true';feed.likeCount=feed.likeCount+1;"
+                            style=""><i class="fa fa-thumbs-o-up "></i></button></span>
+    <span style="float: left;width: 17%;height:auto;text-align:left;">
+                    <button class="notLiked" ng-click="commentClickShowDetail($index)"><img
+                            style="width:1.4em;height:auto;"
+                            src="data:image/png;base64,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"/>
+                    </button></span>
+
+    <span style="font-size: 0.8em;color: #8b8b8b;float: right;padding-right:10px;text-align: right;">
+    <span>{{feed.seenCount }} Views &bull;</span>
+    <span>{{feed.likeCount}} Likes &bull;</span>
+    <span ng-click="commentsShowDetail($index)">{{feed.commentCount}} Comments</span>
+    </span>
+
+            <div style="clear:both;"></div>
+        </div>
+    </div>
+    </br>
+    <a class="btn btn-primary btn-block" style="width: 80%;margin: auto" ng-show="hasMoreItems()"
+       ng-click="showMoreItems()">Show more</a>
+    </br>
+    </br>
+    </br>
+    </br>
+
+
+</div>
+</body>
+</html>

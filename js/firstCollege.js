@@ -1,4 +1,4 @@
-var app = angular.module('newApp', []);
+var app = angular.module('newApp', ['infinite-scroll']);
 
 app.controller('FeedPluginMasterController', ["$scope", "$location", "$rootScope", "$http", function ($scope, $rootScope, $location, $http, FeedPluginData) {
 
